@@ -3,45 +3,58 @@ import { Plus } from "lucide-react";
 import { requireUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import {
-  summarizeInvoices,
   formatRupiah,
   formatDate,
 } from "@/lib/invoices";
+import {
+  clampPage,
+  getInvoiceSummaries,
+  totalPages,
+} from "@/lib/invoice-summaries";
 import { InvoiceStatusChip } from "@/components/invoice-status-chip";
+import { Pager } from "@/components/pager";
 
-export default async function DashboardPage() {
+const RECENT_PAGE_SIZE = 8;
+const STATS_LIMIT = 500;
+
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ recent?: string }>;
+}) {
   const user = await requireUser();
+  const { recent: recentParam } = await searchParams;
   const supabase = await createClient();
 
-  const [invRes, itemRes, payRes, adjRes, tplRes] = await Promise.all([
-    supabase
-      .from("invoices")
-      .select("id, number, client_name, status, issue_date, due_date, tax_rate_bps")
-      .order("created_at", { ascending: false })
-      .limit(500),
-    supabase.from("line_items").select("invoice_id, subtotal_sen"),
-    supabase.from("payments").select("invoice_id, amount_sen"),
-    supabase.from("adjustments").select("invoice_id, amount_sen"),
+  const requestedRecent = Number.parseInt(recentParam ?? "1", 10);
+
+  const [statsRes, tplRes] = await Promise.all([
+    getInvoiceSummaries(supabase, "all", 1, STATS_LIMIT),
     supabase.from("templates").select("id", { count: "exact", head: true }),
   ]);
 
-  const summaries = summarizeInvoices(
-    invRes.data ?? [],
-    itemRes.data ?? [],
-    payRes.data ?? [],
-    adjRes.data ?? []
-  );
+  const recentPage = clampPage(requestedRecent, statsRes.totalCount, RECENT_PAGE_SIZE);
+  const recent =
+    recentPage === 1
+      ? {
+          rows: statsRes.rows.slice(0, RECENT_PAGE_SIZE),
+          totalCount: statsRes.totalCount,
+        }
+      : await getInvoiceSummaries(supabase, "all", recentPage, RECENT_PAGE_SIZE);
 
+  const all = statsRes.rows;
   const templateCount = tplRes.count ?? 0;
-  const unpaid = summaries.filter(
+  const unpaid = all.filter(
     (s) => s.effectiveStatus === "issued" || s.effectiveStatus === "overdue"
   );
   const outstandingSen = unpaid.reduce((acc, s) => acc + s.balanceSen, 0);
-  const overdueCount = summaries.filter(
+  const overdueCount = all.filter(
     (s) => s.effectiveStatus === "overdue"
   ).length;
 
   const greeting = user.email?.split("@")[0] ?? "Pengguna";
+  const recentHref = (p: number) =>
+    p === 1 ? "/dashboard" : `/dashboard?recent=${p}`;
 
   return (
     <div className="space-y-8">
@@ -83,7 +96,7 @@ export default async function DashboardPage() {
           </Link>
         </div>
 
-        {summaries.length === 0 ? (
+        {recent.rows.length === 0 ? (
           <div className="rounded-lg border border-dashed border-line-strong px-6 py-12 text-center">
             <p className="text-sm text-ink-muted">Belum ada invoice.</p>
             <Link
@@ -106,7 +119,7 @@ export default async function DashboardPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-line">
-                {summaries.slice(0, 8).map((inv) => (
+                {recent.rows.map((inv) => (
                   <tr key={inv.id} className="transition-colors hover:bg-surface/60">
                     <td className="px-4 py-3 font-medium text-ink">{inv.number}</td>
                     <td className="px-4 py-3 text-ink-muted">{inv.clientName || "—"}</td>
@@ -125,6 +138,15 @@ export default async function DashboardPage() {
             </table>
           </div>
         )}
+
+        <div className="mt-4">
+          <Pager
+            page={recentPage}
+            totalPages={totalPages(recent.totalCount, RECENT_PAGE_SIZE)}
+            makeHref={recentHref}
+            label="Navigasi invoice terbaru"
+          />
+        </div>
       </section>
     </div>
   );
