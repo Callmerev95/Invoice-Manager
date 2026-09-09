@@ -27,7 +27,6 @@
   html {
     color-scheme: dark;
   }
-
   body {
     background-color: var(--color-bg);
     color: var(--color-ink);
@@ -46,5 +45,46 @@
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
     }
+    .reveal-hidden {
+      opacity: 1;
+    }
+  }
+}
+
+/* Motif emboss lembar invoice — dekorasi landing, warna ikut token bayangan
+   (gelap menekan di belakang, terang mengangkat di depan). */
+.bg-emboss-doc {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='360' viewBox='0 0 280 360' fill='none'%3E%3Cg transform='translate(3,3)' stroke='%230C1210' stroke-width='6'%3E%3Crect x='10' y='10' width='260' height='340' rx='28'/%3E%3Cpath d='M50 90h180M50 140h120M50 190h150'/%3E%3C/g%3E%3Cg stroke='%232A3A34' stroke-width='6'%3E%3Crect x='10' y='10' width='260' height='340' rx='28'/%3E%3Cpath d='M50 90h180M50 140h120M50 190h150'/%3E%3Cpath d='M60 260l30 30 55-64' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+/* Entrance & reveal: satu momen, sekali, hormati reduced-motion. */
+@keyframes neu-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.neu-entrance {
+  animation: neu-rise 280ms ease-out both;
+}
+.reveal-hidden {
+  opacity: 0;
+}
+.reveal-shown {
+  animation: neu-rise 240ms ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .neu-entrance,
+  .reveal-shown {
+    animation: none;
+  }
+  .reveal-hidden {
+    opacity: 1;
   }
 }

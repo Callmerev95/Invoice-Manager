@@ -12,3 +12,4 @@
 - **Fix**: snapshot pola penomoran saat terbit (draf RPC + pola kustom yang selama ini diabaikan).
 - **Rebrand Neumorphism gelap** (ADR-0004): kanvas forest `#141D19` + bayangan ganda, Rubik, timbul=aksi/cekung=isi; PDF & halaman klien tidak berubah; terang = fitur susulan di atas token semantik.
 - **Fix**: pratinjau logo kosong (`src=""`) di form edit template.
+- **Landing page tamu**: root `/` memperkenalkan produk (masalah-solusi + fitur V1 + CTA demo); yang sudah login tetap dilompatkan ke dashboard; CTA demo via `NEXT_PUBLIC_DEMO_URL`, fallback login.

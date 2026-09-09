@@ -15,11 +15,6 @@ export async function proxy(request: NextRequest) {
     (p) => pathname === p || pathname.startsWith(`${p}/`)
   );
 
-  if (pathname === "/") {
-    const destination = user ? "/dashboard" : "/login";
-    return NextResponse.redirect(new URL(destination, request.url));
-  }
-
   if (isProtected && !user) {
     const redirect = request.nextUrl.clone();
     redirect.pathname = "/login";
