@@ -16,6 +16,10 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Data contoh
+
+Untuk melihat tampilan dengan data awal, buka `/dev/seed` (mode development setelap login): tombol "Isi data contoh" akan menghapus seluruh data invoice & template akun dan membuat 2 template + 5 invoice contoh (draf, terbit, lewat jatuh tempo, dan lunas). Seeder dinonaktifkan di production.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
