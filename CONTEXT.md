@@ -82,6 +82,24 @@ _Avoid_: slug, id, link, kode
 `/v/[token]` — ringkasan invoice, pembayaran, dan unduhan PDF, tanpa perlu login.
 _Avoid_: portal, status page, landing
 
+## Visual dokumen
+
+**Logo**:
+Gambar identitas bisnis per template yang diupload dan disnapshot ke invoice.
+_Avoid_: icon, avatar, gambar profil
+
+**Kop**:
+Susunan kepala invoice: logo, nama bisnis, slogan, dan kontak.
+_Avoid_: header, kop surat, letterhead
+
+**Aksen**:
+Satu warna heksa untuk nomor, badge, dan garis penegas di dokumen.
+_Avoid_: tema, warna brand, highlight
+
+**Tanda tangan gambar**:
+File gambar tanda tangan plus teks nama terang, keduanya disnapshot ke invoice.
+_Avoid_: signature, ttd digital, paraf canvas
+
 ## Verb (proses)
 
 **Menerbitkan invoice**:

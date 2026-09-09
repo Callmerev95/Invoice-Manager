@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import Link from "next/link";
 import {
   saveTemplateAction,
@@ -13,16 +13,170 @@ import {
   patternRequiresSeq,
   type TemplateDraft,
 } from "@/lib/templates";
+import {
+  LOGO_MAX_BYTES,
+  LOGO_MAX_H,
+  LOGO_MAX_W,
+  SIGN_MAX_BYTES,
+  SIGN_MAX_H,
+  SIGN_MAX_W,
+  assetKindError,
+  assetPublicUrl,
+  processImage,
+  removeAssets,
+  uploadAsset,
+} from "@/lib/template-assets";
+import { createClient } from "@/lib/supabase/client";
 import { clsx } from "clsx";
+
+function formatKB(bytes: number): string {
+  return `${Math.round(bytes / 1024)} KB`;
+}
+
+function VisualUploader({
+  kind,
+  folder,
+  initialPath,
+  fieldName,
+  inputId,
+  maxW,
+  maxH,
+  maxBytes,
+  hint,
+}: {
+  kind: "logo" | "signature";
+  folder: string;
+  initialPath: string;
+  fieldName: string;
+  inputId: string;
+  maxW: number;
+  maxH: number;
+  maxBytes: number;
+  hint: string;
+}) {
+  const [path, setPath] = useState(initialPath);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleFile(file: File | undefined) {
+    if (!file) return;
+    setError(null);
+    const kindError = assetKindError(file);
+    if (kindError) {
+      setError(kindError);
+      return;
+    }
+    setBusy(true);
+    try {
+      const { blob, ext } = await processImage(file, maxW, maxH);
+      if (blob.size > maxBytes) {
+        setError(
+          `Hasil kompresi masih ${formatKB(blob.size)} (maks ${formatKB(maxBytes)}). Gunakan gambar lebih sederhana.`
+        );
+        return;
+      }
+      const supabase = createClient();
+      const { data } = await supabase.auth.getUser();
+      const userId = data.user?.id;
+      if (!userId) {
+        setError("Sesi berakhir. Muat ulang halaman lalu coba lagi.");
+        return;
+      }
+      const objectPath = `${userId}/${folder}/${kind}.${ext}`;
+      const uploadError = await uploadAsset(
+        supabase,
+        objectPath,
+        blob,
+        ext === "png" ? "image/png" : "image/jpeg"
+      );
+      if (uploadError) {
+        setError(uploadError);
+        return;
+      }
+      if (path && path !== objectPath) {
+        await removeAssets(supabase, [path]);
+      }
+      setPath(objectPath);
+      setPreview(assetPublicUrl(supabase, objectPath));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Gagal mengupload gambar.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleRemove() {
+    if (!path) return;
+    setBusy(true);
+    try {
+      await removeAssets(createClient(), [path]);
+      setPath("");
+      setPreview(null);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="space-y-2">
+      <input type="hidden" name={fieldName} value={path} />
+      {preview || path ? (
+        <div className="flex items-center gap-3">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={preview ?? ""}
+            alt=""
+            className="max-h-20 max-w-48 rounded-md border border-line bg-surface-2 object-contain p-1"
+          />
+          <Button
+            type="button"
+            variant="ghost"
+            disabled={busy}
+            onClick={handleRemove}
+          >
+            {busy ? "Memproses…" : "Hapus"}
+          </Button>
+        </div>
+      ) : (
+        <p className="text-sm text-ink-faint">Belum ada gambar.</p>
+      )}
+      <Input
+        id={inputId}
+        type="file"
+        accept="image/png,image/jpeg"
+        disabled={busy}
+        onChange={(e) => {
+          void handleFile(e.target.files?.[0]);
+          e.target.value = "";
+        }}
+        aria-describedby={`${inputId}-hint`}
+      />
+      <p id={`${inputId}-hint`} className="text-sm text-ink-muted">
+        {busy ? "Mengupload…" : hint}
+      </p>
+      {error ? (
+        <p role="alert" className="text-sm text-danger">
+          {error}
+        </p>
+      ) : null}
+    </div>
+  );
+}
 
 export function TemplateForm({
   initial,
 }: {
   initial: TemplateDraft;
-}) {
-  const [state, action, pending] = useActionState<TemplateFormState, FormData>(
+}) {  const [state, action, pending] = useActionState<TemplateFormState, FormData>(
     saveTemplateAction,
     undefined
+  );
+  const [accent, setAccent] = useState(initial.accent_color || "#0B1211");
+  const [folder] = useState(
+    () =>
+      initial.id ??
+      `baru-${typeof crypto !== "undefined" && "randomUUID" in crypto ? crypto.randomUUID() : String(Date.now())}`
   );
 
   const patternHint = patternRequiresSeq(initial.number_pattern)
@@ -95,6 +249,61 @@ export function TemplateForm({
         </div>
         <Field label="Pembayaran ke" htmlFor="payment_to" hint="Rekening tujuan transfer, mis. Bank BCA — a.n. Namamu — 1234567890.">
           <Textarea id="payment_to" name="payment_to" defaultValue={initial.payment_to} />
+        </Field>
+      </section>
+
+      <section className="space-y-4">
+        <h2 className="text-base font-semibold">Visual dokumen</h2>
+        <p className="text-sm text-ink-muted">
+          Logo, aksen, dan gambar tanda tangan tampil di PDF dan halaman klien.
+          Perubahan hanya berlaku untuk invoice baru — invoice terbit tidak berubah.
+        </p>
+        <Field label="Logo" htmlFor="logo_file">
+          <VisualUploader
+            kind="logo"
+            folder={folder}
+            initialPath={initial.logo_path}
+            fieldName="logo_path"
+            inputId="logo_file"
+            maxW={LOGO_MAX_W}
+            maxH={LOGO_MAX_H}
+            maxBytes={LOGO_MAX_BYTES}
+            hint="PNG/JPG, otomatis diperkecil maks 512px / 300KB."
+          />
+        </Field>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field label="Warna aksen" htmlFor="accent_color">
+            <Input
+              id="accent_color"
+              type="color"
+              value={/^#[0-9a-fA-F]{6}$/.test(accent) ? accent : "#0B1211"}
+              onChange={(e) => setAccent(e.target.value)}
+              className="h-11 max-w-24 cursor-pointer p-1"
+            />
+          </Field>
+          <Field label="Kode warna (heksa)" htmlFor="accent_hex" hint="Format #RRGGBB, mis. #0B1211.">
+            <Input
+              id="accent_hex"
+              value={accent}
+              onChange={(e) => setAccent(e.target.value.trim())}
+              placeholder="#0B1211"
+              maxLength={7}
+            />
+          </Field>
+        </div>
+        <input type="hidden" name="accent_color" value={accent} />
+        <Field label="Gambar tanda tangan" htmlFor="signature_file">
+          <VisualUploader
+            kind="signature"
+            folder={folder}
+            initialPath={initial.signature_image_path}
+            fieldName="signature_image_path"
+            inputId="signature_file"
+            maxW={SIGN_MAX_W}
+            maxH={SIGN_MAX_H}
+            maxBytes={SIGN_MAX_BYTES}
+            hint="PNG/JPG transparan, otomatis diperkecil maks 800x300 / 300KB. Nama tetap diisi di Model invoice."
+          />
         </Field>
       </section>
 

@@ -2,6 +2,7 @@ import { requireUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { buildInvoiceVM } from "@/lib/invoice-vm";
 import { renderInvoicePdf } from "@/lib/pdf";
+import { assetPublicUrl, fetchAssetDataUri } from "@/lib/template-assets";
 
 export async function GET(
   _request: Request,
@@ -29,7 +30,16 @@ export async function GET(
     adjRes.data ?? []
   );
 
-  const buffer = await renderInvoicePdf(vm);
+  const [logoDataUri, signatureImageDataUri] = await Promise.all([
+    fetchAssetDataUri(assetPublicUrl(supabase, vm.logoPath)),
+    fetchAssetDataUri(assetPublicUrl(supabase, vm.signatureImagePath)),
+  ]);
+
+  const buffer = await renderInvoicePdf({
+    ...vm,
+    logoDataUri,
+    signatureImageDataUri,
+  });
   return new Response(buffer, {
     headers: {
       "Content-Type": "application/pdf",

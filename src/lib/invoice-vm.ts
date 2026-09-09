@@ -44,6 +44,8 @@ export type InvoiceVM = {
   taxRateBps: number;
   currency: string;
   accentColor: string | null;
+  logoPath: string | null;
+  signatureImagePath: string | null;
   items: InvoiceItemVM[];
   payments: { id: string; paidAt: string; amountSen: number; note: string | null }[];
   adjustments: { id: string; amountSen: number; reason: string; createdAt: string }[];
@@ -138,6 +140,8 @@ export function buildInvoiceVM(
     taxRateBps: row.tax_rate_bps,
     currency: row.currency,
     accentColor: row.accent_color,
+    logoPath: row.logo_path,
+    signatureImagePath: row.signature_image_path,
     items: itemVMs,
     payments: paymentVMs,
     adjustments: adjustmentVMs,

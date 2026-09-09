@@ -39,6 +39,9 @@ export type TemplateDraft = {
   payment_to: string;
   payment_terms: string;
   signature_text: string;
+  signature_image_path: string;
+  logo_path: string;
+  accent_color: string;
   footer_note: string;
 };
 
@@ -60,6 +63,9 @@ export function toTemplateDraft(row: TemplateRow): TemplateDraft {
     payment_to: row.payment_to ?? "",
     payment_terms: row.payment_terms ?? "",
     signature_text: row.signature_text ?? "",
+    signature_image_path: row.signature_image_path ?? "",
+    logo_path: row.logo_path ?? "",
+    accent_color: row.accent_color ?? "#0B1211",
     footer_note: row.footer_note ?? "",
   };
 }
@@ -81,6 +87,9 @@ export function emptyTemplateDraft(): TemplateDraft {
     payment_to: "",
     payment_terms: "",
     signature_text: "",
+    signature_image_path: "",
+    logo_path: "",
+    accent_color: "#0B1211",
     footer_note: "",
   };
 }

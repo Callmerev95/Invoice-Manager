@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { isPublicInvoice, toPdfInvoice } from "@/lib/public-invoice";
 import { renderInvoicePdf } from "@/lib/pdf";
+import { assetPublicUrl, fetchAssetDataUri } from "@/lib/template-assets";
 
 export async function GET(
   _request: Request,
@@ -17,7 +18,17 @@ export async function GET(
     return new Response("Invoice tidak ditemukan", { status: 404 });
   }
 
-  const buffer = await renderInvoicePdf(toPdfInvoice(data));
+  const pdf = toPdfInvoice(data);
+  const [logoDataUri, signatureImageDataUri] = await Promise.all([
+    fetchAssetDataUri(assetPublicUrl(supabase, pdf.logoPath)),
+    fetchAssetDataUri(assetPublicUrl(supabase, pdf.signatureImagePath)),
+  ]);
+
+  const buffer = await renderInvoicePdf({
+    ...pdf,
+    logoDataUri,
+    signatureImageDataUri,
+  });
   return new Response(buffer, {
     headers: {
       "Content-Type": "application/pdf",

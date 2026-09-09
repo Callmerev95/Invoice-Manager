@@ -104,6 +104,7 @@ export type Database = {
           payment_terms: string | null
           payment_to: string | null
           seq: number
+          signature_image_path: string | null
           signature_text: string | null
           status: Database["public"]["Enums"]["invoice_status"]
           tax_label: string
@@ -138,6 +139,7 @@ export type Database = {
           payment_terms?: string | null
           payment_to?: string | null
           seq?: number
+          signature_image_path?: string | null
           signature_text?: string | null
           status?: Database["public"]["Enums"]["invoice_status"]
           tax_label?: string
@@ -172,6 +174,7 @@ export type Database = {
           payment_terms?: string | null
           payment_to?: string | null
           seq?: number
+          signature_image_path?: string | null
           signature_text?: string | null
           status?: Database["public"]["Enums"]["invoice_status"]
           tax_label?: string
@@ -266,6 +269,7 @@ export type Database = {
       }
       templates: {
         Row: {
+          accent_color: string
           business_address: string | null
           business_email: string | null
           business_line: string | null
@@ -282,6 +286,7 @@ export type Database = {
           number_pattern: string
           payment_terms: string | null
           payment_to: string | null
+          signature_image_path: string | null
           signature_text: string | null
           tax_label: string
           tax_rate_bps: number
@@ -289,6 +294,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          accent_color?: string
           business_address?: string | null
           business_email?: string | null
           business_line?: string | null
@@ -305,6 +311,7 @@ export type Database = {
           number_pattern?: string
           payment_terms?: string | null
           payment_to?: string | null
+          signature_image_path?: string | null
           signature_text?: string | null
           tax_label?: string
           tax_rate_bps?: number
@@ -312,6 +319,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          accent_color?: string
           business_address?: string | null
           business_email?: string | null
           business_line?: string | null
@@ -328,11 +336,12 @@ export type Database = {
           number_pattern?: string
           payment_terms?: string | null
           payment_to?: string | null
+          signature_image_path?: string | null
           signature_text?: string | null
           tax_label?: string
           tax_rate_bps?: number
           updated_at?: string
-          user_id: string
+          user_id?: string
         }
         Relationships: []
       }

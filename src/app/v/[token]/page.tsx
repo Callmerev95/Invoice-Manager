@@ -6,6 +6,7 @@ import {
   isPublicInvoice,
   publicStatus,
 } from "@/lib/public-invoice";
+import { assetPublicUrl } from "@/lib/template-assets";
 import { formatRupiah, formatDate } from "@/lib/invoices";
 import { formatQuantity } from "@/lib/invoice-vm";
 
@@ -44,6 +45,8 @@ export default async function PublicInvoicePage({
   const pub = data;
   const status = publicStatus(pub);
   const accent = readableAccent(pub.accent_color);
+  const logoUrl = assetPublicUrl(supabase, pub.logo_path);
+  const signatureImageUrl = assetPublicUrl(supabase, pub.signature_image_path);
   const balanceSen = pub.totals.subtotal_sen + pub.totals.tax_sen + pub.totals.adjustment_sen - pub.totals.paid_sen;
 
   return (
@@ -62,6 +65,14 @@ export default async function PublicInvoicePage({
         <article className="rounded-lg bg-white p-8 shadow-sm sm:p-12">
           <header className="flex flex-wrap items-start justify-between gap-6 border-b border-neutral-200 pb-8">
             <div>
+              {logoUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={logoUrl}
+                  alt=""
+                  className="mb-3 h-12 w-auto object-contain"
+                />
+              ) : null}
               {pub.business_name || pub.business_line ? (
                 <>
                   <h1 className="text-xl font-bold">{pub.business_name || ""}</h1>
@@ -213,11 +224,21 @@ export default async function PublicInvoicePage({
             </section>
           ) : null}
 
-          {pub.signature_text ? (
+          {pub.signature_text || signatureImageUrl ? (
             <section className="mt-8">
-              <div className="text-base font-semibold" style={{ color: accent }}>
-                {pub.signature_text}
-              </div>
+              {signatureImageUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={signatureImageUrl}
+                  alt=""
+                  className="mb-1 h-12 w-auto object-contain"
+                />
+              ) : null}
+              {pub.signature_text ? (
+                <div className="text-base font-semibold" style={{ color: accent }}>
+                  {pub.signature_text}
+                </div>
+              ) : null}
             </section>
           ) : null}
 

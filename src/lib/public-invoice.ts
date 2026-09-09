@@ -40,6 +40,7 @@ export type PublicInvoice = {
   payment_terms: string | null;
   payment_to: string | null;
   signature_text: string | null;
+  signature_image_path: string | null;
   tax_label: string;
   tax_rate_bps: number;
   accent_color: string | null;
@@ -88,6 +89,11 @@ export function toPdfInvoice(pub: PublicInvoice): PdfInvoice {
     paymentTerms: pub.payment_terms,
     paymentTo: pub.payment_to,
     signatureText: pub.signature_text,
+    signatureImagePath: pub.signature_image_path ?? null,
+    signatureImageDataUri: null,
+    logoPath: pub.logo_path ?? null,
+    logoDataUri: null,
+    accentColor: pub.accent_color ?? null,
     taxLabel: pub.tax_label || "Pajak",
     items: pub.items.map((it) => ({
       description: it.description,

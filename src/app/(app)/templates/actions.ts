@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { DEFAULT_NUMBER_PATTERN, patternRequiresSeq } from "@/lib/templates";
+import { isHexColor, removeAssets } from "@/lib/template-assets";
 import type { TemplateDraft } from "@/lib/templates";
 
 export type TemplateFormState = { error?: string } | undefined;
@@ -33,6 +34,9 @@ export async function saveTemplateAction(
   const taxBps = si(formData.get("tax_rate_bps"), 0);
   const taxLabel = s(formData.get("tax_label"));
   const invoiceTitle = s(formData.get("invoice_title"));
+  const accentColor = s(formData.get("accent_color")) || "#0B1211";
+  const logoPath = s(formData.get("logo_path"));
+  const signatureImagePath = s(formData.get("signature_image_path"));
 
   if (!name) return { error: "Nama template wajib diisi." };
   if (!patternRequiresSeq(numberPattern)) {
@@ -43,6 +47,9 @@ export async function saveTemplateAction(
   }
   if (!Number.isInteger(taxBps) || taxBps < 0) {
     return { error: "Tarif pajak harus angka 0 atau lebih." };
+  }
+  if (!isHexColor(accentColor)) {
+    return { error: "Warna aksen harus format #RRGGBB." };
   }
 
   const values: Omit<TemplateDraft, "id"> & { user_id: string } = {
@@ -61,11 +68,21 @@ export async function saveTemplateAction(
     payment_to: s(formData.get("payment_to")),
     payment_terms: s(formData.get("payment_terms")),
     signature_text: s(formData.get("signature_text")),
+    signature_image_path: signatureImagePath,
+    logo_path: logoPath,
+    accent_color: accentColor,
     footer_note: s(formData.get("footer_note")),
     user_id: user.id,
   };
 
   if (id) {
+    const { data: existing } = await supabase
+      .from("templates")
+      .select("logo_path, signature_image_path")
+      .eq("id", id)
+      .eq("user_id", user.id)
+      .single();
+
     const { error } = await supabase
       .from("templates")
       .update(values)
@@ -74,6 +91,18 @@ export async function saveTemplateAction(
       .select("id")
       .single();
     if (error) return { error: error.message };
+
+    // Hapus file lama yang diganti agar tidak orphan.
+    const stale = [
+      existing?.logo_path && existing.logo_path !== logoPath
+        ? existing.logo_path
+        : "",
+      existing?.signature_image_path &&
+      existing.signature_image_path !== signatureImagePath
+        ? existing.signature_image_path
+        : "",
+    ];
+    await removeAssets(supabase, stale);
   } else {
     const { error } = await supabase
       .from("templates")
@@ -91,11 +120,24 @@ export async function deleteTemplateAction(formData: FormData) {
   const id = s(formData.get("id"));
   if (!id) return;
 
+  const { data: existing } = await supabase
+    .from("templates")
+    .select("logo_path, signature_image_path")
+    .eq("id", id)
+    .eq("user_id", user.id)
+    .single();
+
   await supabase
     .from("templates")
     .delete()
     .eq("id", id)
     .eq("user_id", user.id);
+
+  await removeAssets(supabase, [
+    existing?.logo_path ?? "",
+    existing?.signature_image_path ?? "",
+  ]);
+
   revalidatePath("/templates");
   redirect("/templates");
 }

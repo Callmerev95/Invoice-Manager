@@ -1,5 +1,6 @@
 import {
   Document,
+  Image,
   Page,
   Text,
   View,
@@ -27,6 +28,11 @@ export type PdfInvoice = {
   paymentTerms: string | null;
   paymentTo: string | null;
   signatureText: string | null;
+  signatureImagePath: string | null;
+  signatureImageDataUri: string | null;
+  logoPath: string | null;
+  logoDataUri: string | null;
+  accentColor: string | null;
   taxLabel: string;
   items: {
     description: string;
@@ -72,6 +78,7 @@ const styles = StyleSheet.create({
     paddingBottom: 18,
   },
   brandName: { fontSize: 17, fontWeight: 700 },
+  brandLogo: { width: 96, marginBottom: 8 },
   brandLine: { fontSize: 8.5, color: colors.muted, marginTop: 2 },
   brandMeta: { fontSize: 7.5, color: colors.muted, marginTop: 1.5 },
   wordmark: {
@@ -194,6 +201,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   signature: { marginTop: 40, color: colors.muted },
+  signatureImage: { height: 44, marginBottom: 4 },
   signatureName: { marginTop: 34, fontSize: 10, fontWeight: 700, color: colors.ink },
   footer: {
     marginTop: 34,
@@ -215,12 +223,20 @@ const STATUS_LABEL: Record<PdfInvoice["effectiveStatus"], { text: string; color:
 
 export async function renderInvoicePdf(vm: PdfInvoice): Promise<ArrayBuffer> {
   const status = STATUS_LABEL[vm.effectiveStatus];
+  const accent =
+    vm.accentColor && /^#[0-9a-fA-F]{6}$/.test(vm.accentColor)
+      ? vm.accentColor
+      : colors.accent;
 
   const doc = (
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.header}>
           <View>
+            {vm.logoDataUri ? (
+              // eslint-disable-next-line jsx-a11y/alt-text -- react-pdf Image has no alt prop
+              <Image src={vm.logoDataUri} style={styles.brandLogo} />
+            ) : null}
             <Text style={styles.brandName}>{vm.businessName || vm.invoiceTitle}</Text>
             {vm.businessLine ? <Text style={styles.brandLine}>{vm.businessLine}</Text> : null}
             {vm.businessAddress ? <Text style={styles.brandMeta}>{vm.businessAddress}</Text> : null}
@@ -233,11 +249,11 @@ export async function renderInvoicePdf(vm: PdfInvoice): Promise<ArrayBuffer> {
             )}
           </View>
           <View>
-            <Text style={styles.wordmark}>{vm.invoiceTitle}</Text>
+            <Text style={[styles.wordmark, { color: accent }]}>{vm.invoiceTitle}</Text>
             <Text style={styles.invoiceNo}>
               {vm.status === "issued" ? vm.number : "Draft"}
             </Text>
-            <View style={[styles.statusBadge, { color: status.color, backgroundColor: status.bg, border: vm.effectiveStatus === "draft" ? 1 : undefined, borderColor: vm.effectiveStatus === "draft" ? colors.line : undefined }]}>
+            <View style={[styles.statusBadge, { color: status.color === colors.accent ? accent : status.color, backgroundColor: status.bg, border: vm.effectiveStatus === "draft" ? 1 : undefined, borderColor: vm.effectiveStatus === "draft" ? colors.line : undefined }]}>
               <Text>{status.text}</Text>
             </View>
           </View>
@@ -331,10 +347,23 @@ export async function renderInvoicePdf(vm: PdfInvoice): Promise<ArrayBuffer> {
           </View>
         ) : null}
 
-        {vm.signatureText ? (
+        {vm.signatureImageDataUri || vm.signatureText ? (
           <View style={styles.signature}>
             <Text>{vm.businessName || vm.invoiceTitle}</Text>
-            <Text style={styles.signatureName}>{vm.signatureText}</Text>
+            {vm.signatureImageDataUri ? (
+              // eslint-disable-next-line jsx-a11y/alt-text -- react-pdf Image has no alt prop
+              <Image src={vm.signatureImageDataUri} style={styles.signatureImage} />
+            ) : null}
+            {vm.signatureText ? (
+              <Text
+                style={[
+                  styles.signatureName,
+                  vm.signatureImageDataUri ? { marginTop: 4 } : undefined,
+                ]}
+              >
+                {vm.signatureText}
+              </Text>
+            ) : null}
           </View>
         ) : null}
 
