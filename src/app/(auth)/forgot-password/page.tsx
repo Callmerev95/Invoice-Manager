@@ -10,6 +10,8 @@ export const metadata: Metadata = {
 
 const ERRORS: Record<string, string> = {
   empty: "Masukkan email akun Anda.",
+  ratelimit:
+    "Terlalu banyak permintaan tautan. Tunggu sekitar 1 jam lalu coba sekali lagi.",
   auth: "Tidak bisa memproses. Coba lagi.",
 };
 
