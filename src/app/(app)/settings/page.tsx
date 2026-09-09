@@ -11,7 +11,7 @@ import { PasswordForm } from "@/components/settings/password-form";
 export default async function SettingsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ password?: string; recovery?: string }>;
+  searchParams: Promise<{ password?: string }>;
 }) {
   const user = await requireUser();
   const sp = await searchParams;
@@ -37,11 +37,6 @@ export default async function SettingsPage({
         </p>
       </div>
 
-      {sp.recovery === "1" ? (
-        <p className="rounded-md border border-primary/40 bg-primary/10 px-3 py-2 text-sm text-primary">
-          Tautan pemulihan valid. Silakan atur kata sandi baru di bawah.
-        </p>
-      ) : null}
       {sp.password === "1" ? (
         <p className="rounded-md border border-primary/40 bg-primary/10 px-3 py-2 text-sm text-primary">
           Kata sandi berhasil diganti.

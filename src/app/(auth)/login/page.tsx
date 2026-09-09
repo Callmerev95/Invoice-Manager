@@ -18,9 +18,9 @@ const ERRORS: Record<string, string> = {
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; next?: string }>;
+  searchParams: Promise<{ error?: string; next?: string; reset?: string }>;
 }) {
-  const { error, next } = await searchParams;
+  const { error, next, reset } = await searchParams;
   const message = error ? ERRORS[error] ?? ERRORS.auth : undefined;
 
   return (
@@ -38,6 +38,11 @@ export default async function LoginPage({
           className="mb-4 rounded-md border border-danger/40 bg-danger/10 px-3 py-2 text-sm text-danger"
         >
           {message}
+        </p>
+      ) : null}
+      {reset === "1" ? (
+        <p className="mb-4 rounded-md border border-primary/40 bg-primary/10 px-3 py-2 text-sm text-primary">
+          Kata sandi berhasil diganti. Silakan masuk kembali.
         </p>
       ) : null}
 

@@ -19,7 +19,7 @@ export async function requestPasswordResetAction(formData: FormData) {
   const supabase = await createClient();
   // Hasil selalu dianggap sukses agar tidak membocorkan email terdaftar.
   await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${origin}/auth/callback?next=${encodeURIComponent("/settings?recovery=1")}`,
+    redirectTo: `${origin}/auth/callback?next=${encodeURIComponent("/update-password")}`,
   });
 
   redirect("/forgot-password?sent=1");
