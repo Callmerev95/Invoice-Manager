@@ -350,6 +350,36 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      invoice_status_counts: {
+        Args: Record<string, never>
+        Returns: {
+          status: string
+          count: number
+        }[]
+      }
+      invoice_summaries: {
+        Args: {
+          p_status: string
+          p_limit: number
+          p_offset: number
+        }
+        Returns: {
+          id: string
+          number: string
+          client_name: string
+          issue_date: string | null
+          due_date: string | null
+          tax_rate_bps: number
+          subtotal_sen: number
+          tax_sen: number
+          adjustment_sen: number
+          paid_sen: number
+          balance_sen: number
+          has_adjustment: boolean
+          effective_status: string
+          total_count: number
+        }[]
+      }
       create_invoice_from_template: {
         Args: {
           p_client_address: string | null

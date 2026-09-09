@@ -50,58 +50,109 @@ const BUSINESS = {
     "Terima kasih atas kepercayaan Anda. Jangan ragu menghubungi kami untuk pertanyaan.",
 };
 
-const SEED_INVOICES: SeedInvoice[] = [
-  {
-    clientName: "Arya Wijaya",
-    clientEmail: "arya@karya.id",
-    issuedDaysAgo: 7,
-    dueDays: 14,
-    number: "INV-2026-001",
-    seq: 1,
-    items: [["Desain UI aplikasi mobile", 1, 2_850_000]],
-  },
-  {
-    clientName: "Maya Store",
-    clientEmail: "hello@mayastore.co",
-    issuedDaysAgo: 1,
-    dueDays: 14,
-    number: "INV-2026-002",
-    seq: 2,
-    items: [
-      ["Identitas visual (logo + panduan merek)", 1, 2_400_000],
-      ["Konten Instagram 1 bulan", 1, 900_000],
-    ],
-  },
-  {
-    clientName: "Kopi Senja",
-    clientEmail: "halo@kopisenja.coffee",
-    issuedDaysAgo: 45,
-    dueDays: 14,
-    number: "INV-2026-003",
-    seq: 3,
-    items: [
-      ["Pitch deck & materi presentasi", 1, 2_200_000],
-      ["Sesi konsultasi merek (3 jam)", 3, 250_000],
-    ],
-  },
-  {
-    clientName: "Rumah Roti",
-    clientEmail: "pesan@rumahroti.id",
-    issuedDaysAgo: 39,
-    dueDays: 14,
-    number: "INV-2026-004",
-    seq: 4,
-    items: [
-      ["Packaging & label produk", 1, 1_900_000],
-      ["Desain menu digital", 1, 600_000],
-    ],
-    adjustment: { rupiah: -150_000, reason: "Diskon pelunasan awal", daysAgo: 36 },
-    payments: [
-      { rupiah: 1_000_000, daysAgo: 37, note: "Transfer BCA" },
-      { rupiah: 1_625_000, daysAgo: 35, note: "Pelunasan" },
-    ],
-  },
+const SEED_CLIENTS: { name: string; email?: string }[] = [
+  { name: "Arya Wijaya", email: "arya@karya.id" },
+  { name: "Maya Store", email: "hello@mayastore.co" },
+  { name: "Kopi Senja", email: "halo@kopisenja.coffee" },
+  { name: "Rumah Roti", email: "pesan@rumahroti.id" },
+  { name: "Bengkel Maju", email: "info@bengkelmaju.id" },
+  { name: "Toko Berkah", email: "halo@tokoberkah.id" },
+  { name: "PT Nusa Karya", email: "admin@nusakarya.co.id" },
+  { name: "Kedai Pagi", email: "pagi@kedaipagi.id" },
+  { name: "Studio Lensa", email: "halo@studiolensa.id" },
+  { name: "Laundry Bersih", email: "cs@laundrybersih.id" },
+  { name: "CV Cahaya Timur", email: "info@cahayatimur.id" },
+  { name: "Warung Sore", email: "sore@warungsore.id" },
+  { name: "PT Samudra Biru", email: "keuangan@samudrabiru.id" },
+  { name: "Barbershop Rapi", email: "booking@barberrapi.id" },
+  { name: "Toko Bunga Asri", email: "halo@bungaasri.id" },
+  { name: "Katering Rasa", email: "order@kateringrasa.id" },
+  { name: "PT Wira Logistik", email: "billing@wiralogistik.id" },
+  { name: "Kafe Teduh", email: "halo@kafeteduh.id" },
+  { name: "Percetakan Cepat", email: "order@cetakcepat.id" },
+  { name: "Butik Anggun", email: "cs@butikanggun.id" },
+  { name: "PT Graha Pangan", email: "finance@grahapangan.id" },
+  { name: "Salon Ayu", email: "booking@salonayu.id" },
+  { name: "Toko Alat Tulis Prima", email: "halo@atprima.id" },
+  { name: "Fotokopi Kilat", email: "order@fotokopikilat.id" },
+  { name: "PT Cakra Steel", email: "accounting@cakrasteel.id" },
 ];
+
+const SEED_SERVICES: [string, number][] = [
+  // [deskripsi, harga rupiah satuan]
+  ["Desain UI aplikasi mobile", 2_850_000],
+  ["Identitas visual (logo + panduan merek)", 2_400_000],
+  ["Konten Instagram 1 bulan", 900_000],
+  ["Pitch deck & materi presentasi", 2_200_000],
+  ["Sesi konsultasi merek (3 jam)", 250_000],
+  ["Packaging & label produk", 1_900_000],
+  ["Desain menu digital", 600_000],
+  ["Audit UX + rekomendasi perbaikan", 1_750_000],
+  ["Landing page 1 halaman", 1_200_000],
+  ["Sistem desain komponen dasar", 3_100_000],
+];
+
+function buildSeedInvoices(): SeedInvoice[] {
+  return SEED_CLIENTS.map((client, idx) => {
+    const n = idx + 1;
+    const mode = n % 5;
+    const [descA, priceA] = SEED_SERVICES[idx % SEED_SERVICES.length];
+    const [descB, priceB] = SEED_SERVICES[(idx + 3) % SEED_SERVICES.length];
+    const items: [string, number, number][] =
+      n % 2 === 0
+        ? [[descA, 1, priceA], [descB, 2, priceB]]
+        : [[descA, 1, priceA]];
+
+    const base = {
+      clientName: client.name,
+      clientEmail: client.email,
+      number: `INV-2026-${String(n).padStart(3, "0")}`,
+      seq: n,
+      items,
+    };
+
+    if (mode === 0) {
+      // Lewat jatuh tempo: terbit lama, tanpa pembayaran
+      return { ...base, issuedDaysAgo: 30 + n, dueDays: 14 };
+    }
+    if (mode === 1) {
+      // Lunas: pembayaran penuh
+      const total = items.reduce((acc, [, qty, price]) => acc + qty * price, 0);
+      const withTax = Math.round(total * (1 + TEMPLATE_A.tax_rate_bps / 10000));
+      return {
+        ...base,
+        issuedDaysAgo: 20 + n,
+        dueDays: 14,
+        payments: [
+          { rupiah: Math.floor(withTax / 2), daysAgo: 10, note: "Transfer tahap 1" },
+          { rupiah: Math.ceil(withTax / 2), daysAgo: 5, note: "Pelunasan" },
+        ],
+      };
+    }
+    if (mode === 2) {
+      // Terbit + penyesuaian diskon, belum lunas
+      return {
+        ...base,
+        issuedDaysAgo: 12,
+        dueDays: 30,
+        adjustment: { rupiah: -150_000, reason: "Diskon pelanggan baru", daysAgo: 9 },
+      };
+    }
+    if (mode === 3) {
+      // Terbit + pembayaran sebagian
+      return {
+        ...base,
+        issuedDaysAgo: 6,
+        dueDays: 14,
+        payments: [{ rupiah: 500_000, daysAgo: 2, note: "Uang muka" }],
+      };
+    }
+    // Terbit biasa
+    return { ...base, issuedDaysAgo: 3, dueDays: 14 };
+  });
+}
+
+const SEED_INVOICES: SeedInvoice[] = buildSeedInvoices();
 
 function dateDaysAgo(days: number): string {
   const d = new Date();

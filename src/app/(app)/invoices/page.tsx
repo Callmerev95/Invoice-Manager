@@ -3,11 +3,18 @@ import { Plus } from "lucide-react";
 import { clsx } from "clsx";
 import { requireUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
-import { summarizeInvoices, formatRupiah, formatDate } from "@/lib/invoices";
+import { formatRupiah, formatDate } from "@/lib/invoices";
+import {
+  clampPage,
+  getInvoiceSummaries,
+  getStatusCounts,
+  totalPages,
+  type SummaryFilter,
+} from "@/lib/invoice-summaries";
 import { InvoiceStatusChip } from "@/components/invoice-status-chip";
-import type { EffectiveStatus } from "@/lib/invoices";
+import { Pager } from "@/components/pager";
 
-const FILTERS: { key: EffectiveStatus | "all"; label: string }[] = [
+const FILTERS: { key: SummaryFilter; label: string }[] = [
   { key: "all", label: "Semua" },
   { key: "draft", label: "Draf" },
   { key: "issued", label: "Terbit" },
@@ -18,36 +25,39 @@ const FILTERS: { key: EffectiveStatus | "all"; label: string }[] = [
 export default async function InvoicesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ status?: string; delete?: string }>;
+  searchParams: Promise<{ status?: string; page?: string; delete?: string }>;
 }) {
   await requireUser();
-  const { status: statusFilter = "all", delete: deleted } = await searchParams;
+  const {
+    status: statusFilter = "all",
+    page: pageParam,
+    delete: deleted,
+  } = await searchParams;
   const supabase = await createClient();
 
-  const [invRes, itemRes, payRes, adjRes] = await Promise.all([
-    supabase
-      .from("invoices")
-      .select("id, number, client_name, status, issue_date, due_date, tax_rate_bps")
-      .order("created_at", { ascending: false })
-      .limit(1000),
-    supabase.from("line_items").select("invoice_id, subtotal_sen"),
-    supabase.from("payments").select("invoice_id, amount_sen"),
-    supabase.from("adjustments").select("invoice_id, amount_sen"),
+  const filter = FILTERS.some((f) => f.key === statusFilter)
+    ? (statusFilter as SummaryFilter)
+    : "all";
+  const requestedPage = Number.parseInt(pageParam ?? "1", 10);
+
+  const [first, counts] = await Promise.all([
+    getInvoiceSummaries(supabase, filter, requestedPage),
+    getStatusCounts(supabase),
   ]);
 
-  let summaries = summarizeInvoices(
-    invRes.data ?? [],
-    itemRes.data ?? [],
-    payRes.data ?? [],
-    adjRes.data ?? []
-  );
+  const page = clampPage(requestedPage, first.totalCount);
+  const { rows: summaries, totalCount } =
+    page === requestedPage
+      ? first
+      : await getInvoiceSummaries(supabase, filter, page);
+  const pages = totalPages(totalCount);
 
-  const filter = FILTERS.some((f) => f.key === statusFilter)
-    ? (statusFilter as EffectiveStatus | "all")
-    : "all";
-  if (filter !== "all") {
-    summaries = summaries.filter((s) => s.effectiveStatus === filter);
-  }
+  const filterHref = (key: SummaryFilter) =>
+    key === "all" ? "/invoices" : `/invoices?status=${key}`;
+  const pageHref = (p: number) =>
+    filter === "all"
+      ? `/invoices?page=${p}`
+      : `/invoices?status=${filter}&page=${p}`;
 
   return (
     <div className="space-y-6">
@@ -80,16 +90,16 @@ export default async function InvoicesPage({
         {FILTERS.map(({ key, label }) => (
           <Link
             key={key}
-            href={key === "all" ? "/invoices" : `/invoices?status=${key}`}
+            href={filterHref(key)}
             aria-current={filter === key ? "page" : undefined}
             className={clsx(
-              "rounded-full border px-3 py-1 text-sm transition-colors",
+              "rounded-full border px-3 py-1 text-sm tabular-nums transition-colors",
               filter === key
                 ? "border-primary/50 bg-surface-2 font-medium text-primary"
                 : "border-line text-ink-muted hover:text-ink"
             )}
           >
-            {label}
+            {label} · {counts.get(key) ?? 0}
           </Link>
         ))}
       </nav>
@@ -145,6 +155,12 @@ export default async function InvoicesPage({
           </table>
         </div>
       )}
+
+      <Pager page={page} totalPages={pages} makeHref={pageHref} />
+
+      <p className="sr-only" aria-live="polite">
+        Menampilkan {summaries.length} dari {totalCount} invoice.
+      </p>
     </div>
   );
 }

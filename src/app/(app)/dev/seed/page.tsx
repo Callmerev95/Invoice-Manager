@@ -29,8 +29,8 @@ export default async function SeedPage() {
             <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-warning" aria-hidden />
             <span>
               Menjalankan seeder akan <strong>menghapus seluruh data invoice dan
-              template milik Anda</strong> lalu mengisinya kembali dengan 2 template
-              dan 5 invoice contoh.
+              template milik Anda</strong> lalu mengisinya kembali dengan 2 template,
+              25 invoice contoh, dan 1 draf.
             </span>
           </p>
 
