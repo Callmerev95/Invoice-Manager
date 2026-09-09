@@ -1,5 +1,6 @@
 import { LogOut } from "lucide-react";
 import { AppNav } from "@/components/app-nav";
+import { OverdueBellSlot } from "@/components/overdue-bell-slot";
 
 export default function AppLayout({
   children,
@@ -28,7 +29,14 @@ export default function AppLayout({
       </aside>
 
       <main className="md:pl-60">
-        <div className="mx-auto max-w-6xl px-4 pb-24 pt-8 md:px-8 md:pb-12">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 pt-4 md:px-8">
+          <span className="text-sm font-semibold tracking-tight md:hidden">
+            Invoice Manager
+          </span>
+          <span className="hidden md:inline" />
+          <OverdueBellSlot />
+        </div>
+        <div className="mx-auto max-w-6xl px-4 pb-24 pt-4 md:px-8 md:pb-12">
           {children}
         </div>
       </main>
