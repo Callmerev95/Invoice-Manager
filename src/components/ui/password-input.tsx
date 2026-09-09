@@ -22,7 +22,7 @@ export function PasswordInput({
         type={visible ? "text" : "password"}
         autoComplete={autoComplete}
         required
-        className="w-full rounded-md border border-line bg-surface py-2 pl-9 pr-9 text-sm text-ink placeholder:text-ink-faint focus:border-primary focus:outline-none"
+        className="w-full min-h-[44px] rounded-md border border-line bg-surface py-2 pl-9 pr-9 text-sm text-ink placeholder:text-ink-faint focus:border-primary focus:outline-none"
       />
       <Lock
         aria-hidden
@@ -32,7 +32,7 @@ export function PasswordInput({
         type="button"
         aria-label={visible ? "Sembunyikan kata sandi" : "Tampilkan kata sandi"}
         onClick={() => setVisible((v) => !v)}
-        className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded p-1 text-ink-muted hover:text-ink"
+        className="absolute right-1 top-1/2 inline-flex min-h-[44px] min-w-[44px] -translate-y-1/2 items-center justify-center rounded p-1 text-ink-muted hover:text-ink"
       >
         {visible ? (
           <EyeOff className="h-4 w-4" aria-hidden />

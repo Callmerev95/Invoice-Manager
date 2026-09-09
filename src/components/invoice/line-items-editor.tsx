@@ -72,7 +72,7 @@ export function LineItemsEditor({
               onChange={(e) => updateRow(item.key, { description: e.target.value })}
               placeholder="Deskripsi item atau jasa"
               aria-label="Deskripsi"
-              className="w-full rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink placeholder:text-ink-faint focus:border-primary focus:outline-none"
+              className="w-full min-h-[44px] rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink placeholder:text-ink-faint focus:border-primary focus:outline-none"
             />
             <input
               name="item_quantity"
@@ -81,7 +81,7 @@ export function LineItemsEditor({
               inputMode="decimal"
               placeholder="1"
               aria-label="Jumlah"
-              className="w-full rounded-md border border-line bg-surface px-3 py-2 text-right text-sm tabular-nums text-ink placeholder:text-ink-faint focus:border-primary focus:outline-none"
+              className="w-full min-h-[44px] rounded-md border border-line bg-surface px-3 py-2 text-right text-sm tabular-nums text-ink placeholder:text-ink-faint focus:border-primary focus:outline-none"
             />
             <RupiahInput
               name="item_unit_price_rupiah"
@@ -98,7 +98,7 @@ export function LineItemsEditor({
               type="button"
               onClick={() => removeRow(item.key)}
               aria-label="Hapus baris"
-              className="self-center justify-self-end rounded p-1.5 text-ink-faint hover:bg-surface-2 hover:text-danger"
+              className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center self-center justify-self-end rounded p-2 text-ink-faint hover:bg-surface-2 hover:text-danger"
             >
               <Trash2 className="h-4 w-4" aria-hidden />
             </button>
@@ -109,7 +109,7 @@ export function LineItemsEditor({
       <button
         type="button"
         onClick={addRow}
-        className="inline-flex items-center gap-2 rounded-md border border-line-strong px-3 py-1.5 text-sm text-ink hover:bg-surface-2"
+        className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-md border border-line-strong px-3 py-1.5 text-sm text-ink hover:bg-surface-2"
       >
         <Plus className="h-4 w-4" aria-hidden />
         Tambah baris

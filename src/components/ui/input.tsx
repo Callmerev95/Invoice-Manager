@@ -1,8 +1,9 @@
+import { Children, cloneElement, isValidElement } from "react";
 import { clsx } from "clsx";
 import type { ReactNode, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
 
 const inputClasses =
-  "w-full rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink placeholder:text-ink-faint focus:border-primary focus:outline-none disabled:cursor-not-allowed disabled:opacity-60";
+  "w-full min-h-[44px] rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink placeholder:text-ink-faint focus:border-primary focus:outline-none disabled:cursor-not-allowed disabled:opacity-60";
 
 export function Input({
   className,
@@ -43,18 +44,46 @@ export function Field({
   error?: string;
   children: ReactNode;
 }) {
+  const errorId = `${htmlFor}-error`;
+  const hintId = `${htmlFor}-hint`;
+  const describedBy = [error ? errorId : null, hint && !error ? hintId : null]
+    .filter(Boolean)
+    .join(" ");
+
+  const child = Children.only(children);
+  const childRequired =
+    isValidElement<{ required?: boolean }>(child) && child.props.required === true;
+  const wiredChild =
+    isValidElement<Record<string, unknown>>(child) && describedBy
+      ? cloneElement(child, {
+          "aria-describedby": describedBy,
+          ...(error ? { "aria-invalid": true } : null),
+        })
+      : child;
+
   return (
     <div className="space-y-1.5">
       <label htmlFor={htmlFor} className="block text-sm font-medium text-ink">
         {label}
+        {childRequired ? (
+          <>
+            {" "}
+            <span aria-hidden="true" className="text-danger">
+              *
+            </span>
+            <span className="sr-only">(wajib)</span>
+          </>
+        ) : null}
       </label>
-      {children}
+      {wiredChild}
       {error ? (
-        <p id={`${htmlFor}-error`} className="text-sm text-danger">
+        <p id={errorId} className="text-sm text-danger">
           {error}
         </p>
       ) : hint ? (
-        <p className="text-sm text-ink-muted">{hint}</p>
+        <p id={hintId} className="text-sm text-ink-muted">
+          {hint}
+        </p>
       ) : null}
     </div>
   );

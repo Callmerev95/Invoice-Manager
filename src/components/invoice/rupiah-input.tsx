@@ -75,7 +75,7 @@ export function RupiahInput({
           onValueChange(next.text === "" ? 0 : Number(toDigits(next.text)));
         }}
         className={clsx(
-          "w-full rounded-md border border-line bg-surface px-3 py-2 text-right text-sm tabular-nums text-ink placeholder:text-ink-faint focus:border-primary focus:outline-none",
+          "w-full min-h-[44px] rounded-md border border-line bg-surface px-3 py-2 text-right text-sm tabular-nums text-ink placeholder:text-ink-faint focus:border-primary focus:outline-none",
           className
         )}
       />
