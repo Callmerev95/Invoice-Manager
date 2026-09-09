@@ -146,7 +146,7 @@ export default async function PublicInvoicePage({
                   <div className="flex justify-between text-neutral-600">
                     <dt>Sudah dibayar</dt>
                     <dd className="tabular-nums text-emerald-700">
-                      −{formatRupiah(pub.totals.paid_sen)}
+                      {formatRupiah(pub.totals.paid_sen)}
                     </dd>
                   </div>
                 ) : null}
