@@ -13,6 +13,7 @@ import {
 } from "@/lib/invoice-summaries";
 import { InvoiceStatusChip } from "@/components/invoice-status-chip";
 import { Pager } from "@/components/pager";
+import { isDemoEmail } from "@/lib/demo";
 
 const RECENT_PAGE_SIZE = 8;
 const STATS_LIMIT = 500;
@@ -73,6 +74,19 @@ export default async function DashboardPage({
           Buat invoice
         </Link>
       </header>
+
+      {isDemoEmail(user.email) ? (
+        <p className="rounded-md border border-line-strong bg-surface px-4 py-3 text-sm text-ink-muted">
+          Ini akun demo. Data berantakan?{" "}
+          <Link
+            href="/dev/seed"
+            className="font-medium text-primary hover:text-primary-hover"
+          >
+            Isi ulang data demo
+          </Link>
+          .
+        </p>
+      ) : null}
 
       <section aria-label="Ringkasan" className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <StatCard label="Template" value={String(templateCount)} />

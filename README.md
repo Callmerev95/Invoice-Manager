@@ -18,7 +18,18 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Data contoh
 
-Untuk melihat tampilan dengan data awal, buka `/dev/seed` (mode development setelap login): tombol "Isi data contoh" akan menghapus seluruh data invoice & template akun dan membuat 2 template + 5 invoice contoh (draf, terbit, lewat jatuh tempo, dan lunas). Seeder dinonaktifkan di production.
+Untuk melihat tampilan dengan data awal, buka `/dev/seed` (mode development setelah login): tombol "Isi data contoh" akan menghapus seluruh data invoice & template akun dan membuat 2 template + 25 invoice contoh (draf, terbit, lewat jatuh tempo, lunas, penyesuaian) termasuk template bervisiual (logo, aksen, tanda tangan). Seeder hanya aktif di development, atau di production khusus akun demo bila `ALLOW_DEMO_SEED=true` dan email terdaftar di `DEMO_EMAILS`.
+
+## Live demo (untuk reviewer)
+
+1. Buat project Supabase baru → apply seluruh migrasi di `supabase/migrations/` berurutan via SQL Editor.
+2. Buat user demo di Auth dashboard: `demo@contoh.test` (kata sandi bebas, mis. `Demo1234!`).
+3. Deploy app ke hosting terpisah (project/hosting berbeda dari production) dengan env menunjuk ke Supabase demo, plus:
+   - `ALLOW_DEMO_SEED=true`
+   - `DEMO_EMAILS=demo@contoh.test`
+   - `NEXT_PUBLIC_DEMO_PASSWORD=<kata sandi akun demo>`
+4. Login sebagai akun demo → halaman login menampilkan kotak "Coba live demo" → jalankan seeder sekali via banner di dashboard (`Isi ulang data demo`).
+5. Jangan pernah set `ALLOW_DEMO_SEED` di deployment production.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 

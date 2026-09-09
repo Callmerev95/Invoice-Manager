@@ -350,6 +350,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      reset_demo_data: {
+        Args: Record<string, never>
+        Returns: undefined
+      }
       invoice_status_counts: {
         Args: Record<string, never>
         Returns: {

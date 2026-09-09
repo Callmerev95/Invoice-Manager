@@ -4,6 +4,7 @@ import { loginAction } from "./actions";
 import { Field, Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PasswordInput } from "@/components/ui/password-input";
+import { DemoLoginBox } from "@/components/demo-login-box";
 
 export const metadata: Metadata = {
   title: "Masuk — Invoice Manager",
@@ -66,6 +67,8 @@ export default async function LoginPage({
           </Link>
         </p>
       </form>
+
+      <DemoLoginBox />
 
       <p className="mt-6 text-center text-sm text-ink-muted">
         Belum punya akun?{" "}

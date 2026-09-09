@@ -1,7 +1,11 @@
 "use server";
 
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { requireUser } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
+import { canRunSeeder } from "@/lib/demo";
+import { removeAssets } from "@/lib/template-assets";
 
 export type SeedResult = { ok: true; summary: string[] } | { ok: false; error: string };
 
@@ -172,28 +176,35 @@ function senFromRupiah(rupiah: number): number {
 }
 
 export async function seedDemoAction(): Promise<SeedResult> {
-  if (process.env.NODE_ENV === "production") {
-    return { ok: false, error: "Seeder hanya dapat dijalankan di environment development." };
-  }
-
   const user = await requireUser();
+  if (!canRunSeeder(user.email)) {
+    return { ok: false, error: "Seeder tidak tersedia di environment ini." };
+  }
   const supabase = await createClient();
   const summary: string[] = [];
 
-  const { data: existing } = await supabase
-    .from("invoices")
-    .select("id")
+  const { data: oldTemplates } = await supabase
+    .from("templates")
+    .select("logo_path, signature_image_path")
     .eq("user_id", user.id);
-  const invoiceIds = (existing ?? []).map((r) => r.id);
 
-  if (invoiceIds.length > 0) {
-    await supabase.from("line_items").delete().in("invoice_id", invoiceIds);
-    await supabase.from("payments").delete().in("invoice_id", invoiceIds);
-    await supabase.from("adjustments").delete().in("invoice_id", invoiceIds);
-    await supabase.from("invoices").delete().in("id", invoiceIds);
+  // Wipe via RPC: invoice terbit immutable bagi DELETE biasa (ADR-0001),
+  // jadi reset dilepas-pasang trigger di dalam fungsi definer khusus demo.
+  const { error: resetError } = await supabase.rpc("reset_demo_data");
+  if (resetError) {
+    const msg = /forbidden/i.test(resetError.message ?? "")
+      ? "Reset hanya untuk akun demo."
+      : (resetError.message ?? "").slice(0, 120) || "Gagal mereset data demo.";
+    return { ok: false, error: msg };
   }
-  await supabase.from("invoice_series").delete().eq("user_id", user.id);
-  await supabase.from("templates").delete().eq("user_id", user.id);
+
+  await removeAssets(
+    supabase,
+    (oldTemplates ?? []).flatMap((t) => [
+      t.logo_path ?? "",
+      t.signature_image_path ?? "",
+    ])
+  );
 
   const templateA = await insertTemplate(TEMPLATE_A);
   if (!templateA) return { ok: false, error: "Gagal membuat template pertama." };
@@ -201,6 +212,11 @@ export async function seedDemoAction(): Promise<SeedResult> {
   if (!templateB) return { ok: false, error: "Gagal membuat template kedua." };
   summary.push(`Template "${TEMPLATE_A.name}" dibuat.`);
   summary.push(`Template "${TEMPLATE_B.name}" dibuat.`);
+
+  // Showcase visual: logo + tanda tangan + aksen untuk template pertama.
+  const visualError = await seedTemplateVisual(supabase, user.id, templateA);
+  if (visualError) return { ok: false, error: visualError };
+  summary.push("Visual template (logo, aksen, tanda tangan) dipasang.");
 
   for (const inv of SEED_INVOICES) {
     const issueDate = dateDaysAgo(inv.issuedDaysAgo);
@@ -344,4 +360,42 @@ async function insertTemplate(def: {
     .select("id")
     .single();
   return error ? null : data.id;
+}
+
+async function seedTemplateVisual(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  userId: string,
+  templateId: string
+): Promise<string | null> {
+  try {
+    const dir = path.join(process.cwd(), "public", "demo");
+    const logo = await readFile(path.join(dir, "logo.png"));
+    const signature = await readFile(path.join(dir, "signature.png"));
+    const logoPath = `${userId}/${templateId}/logo.png`;
+    const signaturePath = `${userId}/${templateId}/signature.png`;
+
+    const { error: logoError } = await supabase.storage
+      .from("template-assets")
+      .upload(logoPath, logo, { contentType: "image/png", upsert: true });
+    if (logoError) return `Gagal mengupload logo contoh: ${logoError.message}`;
+
+    const { error: signError } = await supabase.storage
+      .from("template-assets")
+      .upload(signaturePath, signature, { contentType: "image/png", upsert: true });
+    if (signError) return `Gagal mengupload tanda tangan contoh: ${signError.message}`;
+
+    const { error: updateError } = await supabase
+      .from("templates")
+      .update({
+        logo_path: logoPath,
+        signature_image_path: signaturePath,
+        accent_color: "#17A674",
+      })
+      .eq("id", templateId)
+      .eq("user_id", userId);
+    if (updateError) return `Gagal menyimpan visual contoh: ${updateError.message}`;
+    return null;
+  } catch (err) {
+    return `Gagal membaca aset contoh: ${err instanceof Error ? err.message : "unknown"}`;
+  }
 }

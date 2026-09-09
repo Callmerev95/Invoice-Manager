@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { AlertTriangle, ArrowRight } from "lucide-react";
 import { SeedButton } from "./seed-button";
+import { isSeederPageEnabled } from "@/lib/demo";
 
 export const runtime = "nodejs";
 
 export default async function SeedPage() {
-  const isProduction = process.env.NODE_ENV === "production";
+  const seedingBlocked = !isSeederPageEnabled();
 
   return (
     <div className="mx-auto max-w-xl space-y-6">
@@ -16,12 +17,12 @@ export default async function SeedPage() {
         </p>
       </div>
 
-      {isProduction ? (
+      {seedingBlocked ? (
         <p
           role="alert"
           className="rounded-md border border-danger/40 bg-danger/10 px-4 py-3 text-sm text-danger"
         >
-          Seeder dinonaktifkan di environment production.
+          Seeder dinonaktifkan di environment ini.
         </p>
       ) : (
         <>
