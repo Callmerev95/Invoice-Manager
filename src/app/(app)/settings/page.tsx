@@ -1,7 +1,8 @@
+import { LogOut } from "lucide-react";
 import { requireUser } from "@/lib/auth";
 
-export default async function SettingsPlaceholder() {
-  await requireUser();
+export default async function SettingsPage() {
+  const user = await requireUser();
 
   return (
     <div className="space-y-6">
@@ -11,11 +12,34 @@ export default async function SettingsPlaceholder() {
           Profil, nomor seri, dan setelan lainnya.
         </p>
       </div>
-      <div className="rounded-lg border border-dashed border-line-strong px-6 py-12 text-center">
-        <p className="text-sm text-ink-muted">
-          Halaman setelan belum dibangun.
-        </p>
-      </div>
+
+      <section
+        aria-labelledby="settings-account"
+        className="rounded-lg border border-line bg-surface p-5"
+      >
+        <h2 id="settings-account" className="text-base font-semibold">
+          Akun
+        </h2>
+        <dl className="mt-4 space-y-3 text-sm">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <dt className="text-xs uppercase tracking-wide text-ink-faint">
+                Email masuk
+              </dt>
+              <dd className="mt-0.5 text-ink">{user.email ?? "—"}</dd>
+            </div>
+            <form action="/auth/signout" method="POST">
+              <button
+                type="submit"
+                className="inline-flex items-center gap-2 rounded-md border border-line-strong px-3 py-1.5 text-sm text-ink transition-colors hover:bg-surface-2"
+              >
+                <LogOut className="h-4 w-4" aria-hidden />
+                Keluar
+              </button>
+            </form>
+          </div>
+        </dl>
+      </section>
     </div>
   );
 }
