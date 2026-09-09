@@ -1,145 +1,104 @@
-# DESIGN.md — Invoice Manager (V1)
+# DESIGN.md — Invoice Manager (neu gelap)
 
-Identitas visual: **terukur dan tegas** (brief pengguna). Produk kerja pelacak
-invoice untuk freelancer Indonesia. Semuanya baca seperti buku besar: angka
-selalu tabular, setiap keadaan (status invoice) selalu terlihat, dan tidak ada
-dekorasi yang tidak membawa informasi.
+Identitas visual: **taktil dan tenang** — permukaan yang bisa "disentuh".
+Produk kerja pelacak invoice untuk freelancer Indonesia. Semuanya baca seperti
+buku besar yang diukir: angka tabular, setiap keadaan selalu terlihat, dan
+kedalaman berarti sesuatu (timbul = aksi, cekung = isi).
 
-## Arah desain (dari brief)
+## Arah desain
 
-| Sumbu        | Keputusan                                                                 |
-| ------------ | ------------------------------------------------------------------------- |
-| Mood         | Modern & tegas — gelap seperti workbench, bukan "SaaS menyenangkan".      |
-| Aksen        | Satu aksen emerald. Hijau bermakna uang & lunas. Dilarang aksen kedua.    |
-| Navigator    | Sidebar kiri (desktop) + bottom-nav (mobile).                            |
-| Cahaya       | **Dark-first**, tanpa toggle light V1. Dokumen PDF dikontrol template.    |
-| Tipografi    | Satu keluarga grotesk; angka pakai `tabular-nums` di seluruh UI.          |
+| Sumbu        | Keputusan                                                                  |
+| ------------ | -------------------------------------------------------------------------- |
+| Mood         | Modern & tegas — workbench gelap yang tactile, bukan "SaaS menyenangkan".  |
+| Kanvas       | Forest charcoal `#141D19`; bayangan ganda `#0C1211`-gelap / `#2A3A34`-terang |
+| Aksen        | Satu aksen emerald `#2EC48F`. Hijau bermakna uang & lunas. Dilarang aksen kedua. |
+| Navigator    | Sidebar kiri (desktop) + bottom-nav (mobile). Item aktif cekung.           |
+| Cahaya       | **Dark saja**, tanpa toggle (terang = fitur susulan terpisah).             |
+| Tipografi    | Rubik (400/500/700) via `next/font/google`; angka `tabular-nums` di seluruh UI. |
+
+## Bahasa kedalaman (aturan utama)
+
+Bayangan bukan dekorasi — ia mengkodekan makna. Token: `shadow-neu-out`
+(timbul), `shadow-neu-in` (cekung), `shadow-neu-sm` (timbul kecil).
+
+| Bentuk              | Arti                                  | Contoh                          |
+| ------------------- | ------------------------------------- | ------------------------------- |
+| Timbul (`out/sm`)   | Bisa ditekan / permukaan interaktif   | Tombol, kartu, pil, nav hover   |
+| Cekung (`in`)       | Isi / wadah / keadaan aktif           | Input, panel tabel, nav aktif, halaman pager aktif |
+| Datar               | Teks, label, pemisah                  | Judul, hairline struktural      |
+
+- Dilarang: bayangan pada elemen datar; lebih dari satu level timbul bertumpuk
+  tanpa alasan; glow/shimmer/animasi loop.
+- Radius: `rounded-xl` komponen, `rounded-2xl` panel/kartu, `rounded-full` pil.
+- Baris tabel padat: `py-2`, `text-sm`; hairline pemisah `line/60`.
 
 ## Tokens
 
-### Warna (dark mode saja)
+### Warna
 
-Karakter charcoal gelap **dengan rona hijau** (bukan abu bersih) supaya
-menyatu dengan aksen, bukan "hitam + hijau tempel".
+| Token              | Hex       | Dipakai untuk                                  |
+| ------------------ | --------- | ---------------------------------------------- |
+| `bg`               | `#141D19` | Kanvas (sama dengan surface: ekstrusi butuh kesamaan) |
+| `surface`          | `#141D19` | Kartu / panel / input                          |
+| `surface-2`        | `#1C2622` | Hover, skeleton                                |
+| `border-line*`     | —         | HANYA hairline struktural (`/60`); bukan bingkai kartu |
+| `text`             | `#E4ECE8` | Teks primer (kontras > 7:1)                    |
+| `text-muted`       | `#9FAEA7` | Teks sekunder (≥ 4.5:1)                        |
+| `text-faint`       | `#7A8A83` | Placeholder — dilarang untuk teks kecil penting |
+| `primary`          | `#2EC48F` | Aksi utama, link, status terbit                |
+| `primary-hover`    | `#3FD6A1` | Hover aksen                                    |
+| `primary-strong`   | `#17A674` | Status lunas                                   |
+| `warning`          | `#D5A83E` | Status lewat jatuh tempo (fungsional)          |
+| `danger`           | `#E05A5A` | Hapus, error, masalah                          |
 
-| Token              | Hex      | Dipakai untuk                                   |
-| ------------------ | -------- | ----------------------------------------------- |
-| `bg`               | `#0B1211`| Kanvas                                            |
-| `surface`          | `#121C19`| Kartu / panel                                     |
-| `surface-2`        | `#1A2622`| Kartu hover, input                                 |
-| `border`           | `#2A3A34`| Garis struktural                                  |
-| `border-strong`    | `#3A4E46`| Fokus struktural, pemisah tabel                  |
-| `text`             | `#E4ECE8`| Teks primer (kontras > 7:1)                      |
-| `text-muted`       | `#9FAEA7`| Teks sekunder (≥ 4.5:1)                          |
-| `text-faint`       | `#6E7D76`| Placeholder, label mati                          |
-| `primary`          | `#2EC48F`| Aksi utama, link, status terbit                  |
-| `primary-hover`    | `#3FD6A1`| Hover aksen                                      |
-| `primary-strong`   | `#17A674`| Status lunas                                      |
-| `warning`          | `#D5A83E`| Status lewat jatuh tempo (computed)              |
-| `danger`           | `#E05A5A`| Hapus, error, masalah                            |
-
-Aturan satu-aksen: **emerald hanya untuk uang/lunas/aksi utama.** Status
-warning/danger adalah semantik (fungsional), bukan aksen dekoratif — tetap
-diredam agar tidak berteriak.
+Aturan satu-aksen dan status semantik diredam tetap berlaku. **Disiplin kontras
+baru**: teks kecil tidak boleh memakai warna lebih redup dari `text-muted` di
+atas kanvas — abu-di-atas-abu adalah kegagalan, bukan gaya.
 
 ### Status invoice (chip)
 
-| Status | Chip (pill kecil)                             | Ikon (lucide)      |
-| ------ | --------------------------------------------- | ------------------ |
-| Draft  | `border` dashed, `text-muted`                 | FileText           |
-| Terbit | `primary` solid, `text` gelap                 | Send               |
-| Lewat  | `warning` tint, `text-warning`                | AlarmClock         |
-| Lunas  | `primary-strong` solid, `text` gelap          | Check              |
-| Disesuaikan (ada penyesuaian) | `border-strong` + badge kecil `warning` | SlidersHorizontal |
+Pil timbul (`neu-sm`): Draf `text-muted`, Terbit `primary`, Lewat `warning`,
+Lunas `primary-strong`, penyesuaian pil kecil + ikon.
 
 ### Tipografi
 
-Satu keluarga: **Familjen Grotesk** (variabel 300–700) via `next/font/google`,
-`display: "optional"`, `preload: true`. Tidak ada keluarga monospace untuk
-label data — semua angka pakai `font-variant-numeric: tabular-nums` pada font
-yang sama (identitas angka ada di *angka*, bukan di *jenis huruf terpisah*).
-
-| Peran          | Ukuran / berat                              |
-| -------------- | ------------------------------------------- |
-| Judul halaman  | `text-xl` semibold, `tracking-tight`        |
-| Angka besar (total) | `text-3xl` extrabold `tabular-nums`    |
-| Body / data    | `text-sm`                                   |
-| Tabel          | `text-sm` `tabular-nums`                    |
-| Chip status    | `text-xs` semibold                          |
-
-Sentence case di mana-mana (tiada ALL-CAPS), tanpa eyebrow label di atas judul.
-
-### Radius & spacing
-
-- Komponen: `rounded-md` (6px). Tidak ada pill untuk tombol/kartu.
-- Chip status: pil kecil (tinggi 5–6px) — kebenaran tag, bukan pintu radius.
-- Baris tabel padat: `py-2`, `text-sm`. Daftar invoice adalah peta kerja.
-- Spacing: skala default Tailwind; grid konten padat (tabel) maks ~1280px,
-  formulir maks ~720px.
+Satu keluarga: **Rubik**. Angka besar total `text-3xl` extrabold `tabular-nums`
+(Rubik mendukung figur tabular — diverifikasi di prototipe). Sentence case di
+mana-mana, tanpa eyebrow label, tanpa meta string `·`, tanpa `→` dekoratif.
 
 ## Tata letak
 
-Desktop — sidebar tetap `w-60`:
-
-```
-┌──────┬────────────────────────────────────┐
-│ Nama │  Invoice                     [+ Baru]│
-│       │  ┌────────────────────────────────┐ │
-│ Beranda│  No   Klien   Status  Jatuh  Total│ │
-│ Template│  ─────────────────────────────── │ │
-│ Invoice│  │ dense table                    │ │
-│ Setelan│  └────────────────────────────────┘ │
-└──────┴────────────────────────────────────┘
-```
-
-Mobile — bottom-nav `h-16`, 4 item (Beranda, Template, Invoice, Setelan;
-Pembayaran dikelola di dalam detail invoice):
-
-```
-┌────────────────────────┐
-│ Invoice            [+Baru]│
-│                        │
-│ content (tabel → card) │
-│                        │
-├────────────────────────┤
-│  Beranda  Template  Invoice  Setelan │
-└────────────────────────┘
-```
-
-- Isi konten rata kiri; tabel penuh lebar wadah.
-- Navigasi aktif: aksen `primary` + latar `surface-2`.
+Tidak berubah dari V1 (sidebar `w-60`, bottom-nav `h-16`, konten rata kiri,
+tabel penuh wadah, formulir maks ~720px). Navigasi aktif: cekung + `primary`.
 
 ## Gerak
 
-- Zona tenang. Satu momen orkestrasi saat masuk dashboard (fade + 4px,
-  ~200ms). Transisi komponen 120–160ms.
+- Zona tenang. Tekan tombol = tenggelam (`active:shadow-neu-in`) — satu-satunya
+  momen taktil. Transisi 120–160ms.
 - `prefers-reduced-motion: reduce` mematikan semua animasi; loading = skeleton
-  statis (tanpa shimmer bergerak).
+  timbul statis (tanpa shimmer bergerak).
 
 ## Aksesibilitas
 
-- Kontras: teks primer ≥ 7:1, sekunder ≥ 4.5:1 (di atas `bg`/`surface`).
-- Fokus: ring 2px `primary` dengan offset 2px — terlihat di semua media.
-- Target sentuh ≥ 44px (bottom-nav, tombol ikon).
-- Error/inline validasi: teks `danger` + `aria-invalid`, bukan hanya warna.
-- Empty state = undangan aksi, bukan keluhan ("Belum ada invoice — Terbitkan
-  yang pertama").
+- Kontras: primer ≥ 7:1, sekunder ≥ 4.5:1.
+- Fokus: ring 2px `primary` offset 2px (input mengandalkan ini; tanpa border fokus).
+- Target sentuh ≥ 44px; error = teks `danger` + `aria-invalid`.
+- Empty state = undangan aksi.
 
 ## Voice (Bahasa Indonesia)
 
-Active voice, sentence case, kata konsisten sepanjang alur. Nama aksi tetap
-sama dari tombol sampai notifikasi: tombol "Terbitkan invoice" → konfirmasi
-"Invoice terbit". Kata kunci domain: **draft, terbit, kirim, lunas, catat
-pembayaran, lewat jatuh tempo, penyesuaian**. Hindari jargon teknis kepada
-pengguna (dokumen, bukan "snapshot"; catat pembayaran, bukan "record payment").
+Tidak berubah: active voice, sentence case, nama aksi konsisten
+(Terbitkan invoice → "Invoice terbit").
+
+## Batas cakupan
+
+Halaman `/v/[token]` dan PDF **bukan** bagian chrome aplikasi — keduanya dokumen
+milik template dengan desain konservatif sendiri, tidak ikut bahasa neu.
 
 ## Anti-pola (guardrail)
 
-- Tidak ada gradient wash sebagai dekorasi, satu warna rata saja.
-- Tidak ada bayangan lunak `rgba(0,0,0,.1)` di bawah kartu; pisahkan dengan
-  `border`/latar.
-- Tidak ada aksen kata tunggal dalam judul, tidak ada meta string `·`, tidak
-  ada tanda `→` akan di-link/button.
-- Tidak ada radius seragam pill di semua elemen.
-- Halaman `/v/[token]` dan PDF **bukan** bagian chrome aplikasi — keduanya
-  dokumen yang dikontrol template pengguna, desainnya milik data template.
+- Tidak ada gradient wash dekoratif; tidak ada glow; tidak ada glass/blur.
+- Tidak ada bayangan pada elemen datar; tidak ada radius pill untuk tombol/kartu.
+- Tidak ada aksen kata tunggal dalam judul; tidak ada warna di luar token.
+- Nol heksa hardcoded di komponen — semua warna lewat token (syarat toggle
+  terang susulan).

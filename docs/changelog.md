@@ -10,3 +10,5 @@
 - **Footer + versi**: `© 2026 Callmerev • Invoice Manager V1`; bump `1.0.0`.
 - **Live demo**: env terpisah, akun demo publik, seed 25 contoh bervisiual, reset mandiri.
 - **Fix**: snapshot pola penomoran saat terbit (draf RPC + pola kustom yang selama ini diabaikan).
+- **Rebrand Neumorphism gelap** (ADR-0004): kanvas forest `#141D19` + bayangan ganda, Rubik, timbul=aksi/cekung=isi; PDF & halaman klien tidak berubah; terang = fitur susulan di atas token semantik.
+- **Fix**: pratinjau logo kosong (`src=""`) di form edit template.
