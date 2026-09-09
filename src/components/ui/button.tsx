@@ -5,11 +5,11 @@ type Variant = "primary" | "ghost" | "danger";
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-primary text-bg font-semibold hover:bg-primary-hover disabled:opacity-60",
+    "bg-primary text-bg font-semibold shadow-neu-sm hover:bg-primary-hover disabled:opacity-60 disabled:shadow-none active:shadow-neu-in",
   ghost:
-    "border border-line-strong text-ink hover:bg-surface-2 disabled:opacity-60",
+    "bg-surface text-ink shadow-neu-sm hover:bg-surface-2 disabled:opacity-60 disabled:shadow-none active:shadow-neu-in",
   danger:
-    "bg-danger/10 text-danger font-semibold hover:bg-danger/20 disabled:opacity-60",
+    "bg-danger/10 text-danger font-semibold shadow-neu-sm hover:bg-danger/20 disabled:opacity-60 disabled:shadow-none active:shadow-neu-in",
 };
 
 export function Button({
@@ -20,7 +20,7 @@ export function Button({
   return (
     <button
       className={clsx(
-        "inline-flex cursor-pointer items-center justify-center gap-2 rounded-md px-4 py-2 min-h-[44px] text-sm transition-colors disabled:cursor-not-allowed",
+        "inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl px-4 py-2 min-h-[44px] text-sm transition-all disabled:cursor-not-allowed",
         variants[variant],
         className
       )}

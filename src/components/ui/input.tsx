@@ -3,7 +3,7 @@ import { clsx } from "clsx";
 import type { ReactNode, SelectHTMLAttributes, TextareaHTMLAttributes } from "react";
 
 const inputClasses =
-  "w-full min-h-[44px] rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink placeholder:text-ink-faint focus:border-primary focus:outline-none disabled:cursor-not-allowed disabled:opacity-60";
+  "w-full min-h-[44px] rounded-xl border-0 bg-surface px-3 py-2 text-sm text-ink shadow-neu-in placeholder:text-ink-faint focus:outline-none disabled:cursor-not-allowed disabled:opacity-60";
 
 export function Input({
   className,

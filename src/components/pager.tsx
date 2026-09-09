@@ -36,14 +36,14 @@ export function Pager({
           <Link
             href={prevHref}
             aria-label="Halaman sebelumnya"
-            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md border border-line text-ink hover:bg-surface-2"
+            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl bg-surface shadow-neu-sm text-ink hover:bg-surface-2"
           >
             <ChevronLeft className="h-5 w-5" aria-hidden />
           </Link>
         ) : (
           <span
             aria-hidden
-            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md border border-line opacity-40"
+            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl bg-surface shadow-neu-sm opacity-40"
           >
             <ChevronLeft className="h-5 w-5" />
           </span>
@@ -55,14 +55,14 @@ export function Pager({
           <Link
             href={nextHref}
             aria-label="Halaman berikutnya"
-            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md border border-line text-ink hover:bg-surface-2"
+            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl bg-surface shadow-neu-sm text-ink hover:bg-surface-2"
           >
             <ChevronRight className="h-5 w-5" aria-hidden />
           </Link>
         ) : (
           <span
             aria-hidden
-            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md border border-line opacity-40"
+            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl bg-surface shadow-neu-sm opacity-40"
           >
             <ChevronRight className="h-5 w-5" />
           </span>
@@ -75,14 +75,14 @@ export function Pager({
           <Link
             href={prevHref}
             aria-label="Halaman sebelumnya"
-            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md border border-line text-ink hover:bg-surface-2"
+            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl bg-surface shadow-neu-sm text-ink hover:bg-surface-2"
           >
             <ChevronLeft className="h-4 w-4" aria-hidden />
           </Link>
         ) : (
           <span
             aria-hidden
-            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md border border-line opacity-40"
+            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl bg-surface shadow-neu-sm opacity-40"
           >
             <ChevronLeft className="h-4 w-4" />
           </span>
@@ -96,7 +96,7 @@ export function Pager({
             <span
               key={p}
               aria-current="page"
-              className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md border border-primary/50 bg-surface-2 px-3 text-sm font-medium tabular-nums text-primary"
+              className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl bg-surface px-3 text-sm font-medium tabular-nums text-primary shadow-neu-in"
             >
               {p}
             </span>
@@ -105,7 +105,7 @@ export function Pager({
               key={p}
               href={makeHref(p)}
               aria-label={`Halaman ${p}`}
-              className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md border border-line px-3 text-sm tabular-nums text-ink-muted hover:text-ink"
+              className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl bg-surface shadow-neu-sm px-3 text-sm tabular-nums text-ink-muted hover:text-ink"
             >
               {p}
             </Link>
@@ -115,14 +115,14 @@ export function Pager({
           <Link
             href={nextHref}
             aria-label="Halaman berikutnya"
-            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md border border-line text-ink hover:bg-surface-2"
+            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl bg-surface shadow-neu-sm text-ink hover:bg-surface-2"
           >
             <ChevronRight className="h-4 w-4" aria-hidden />
           </Link>
         ) : (
           <span
             aria-hidden
-            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md border border-line opacity-40"
+            className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl bg-surface shadow-neu-sm opacity-40"
           >
             <ChevronRight className="h-4 w-4" />
           </span>

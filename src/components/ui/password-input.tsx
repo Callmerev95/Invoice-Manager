@@ -22,7 +22,7 @@ export function PasswordInput({
         type={visible ? "text" : "password"}
         autoComplete={autoComplete}
         required
-        className="w-full min-h-[44px] rounded-md border border-line bg-surface py-2 pl-9 pr-9 text-sm text-ink placeholder:text-ink-faint focus:border-primary focus:outline-none"
+        className="w-full min-h-[44px] rounded-xl border-0 bg-surface py-2 pl-9 pr-9 text-sm text-ink shadow-neu-in placeholder:text-ink-faint focus:outline-none"
       />
       <Lock
         aria-hidden

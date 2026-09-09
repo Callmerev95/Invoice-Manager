@@ -2,7 +2,7 @@ export function Sk({ className = "" }: { className?: string }) {
   return (
     <span
       aria-hidden
-      className={`block rounded-md bg-surface-2 ${className}`}
+      className={`block rounded-xl bg-surface-2 shadow-neu-sm ${className}`}
     />
   );
 }

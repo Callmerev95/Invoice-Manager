@@ -47,13 +47,13 @@ export function AppNav({ variant = "sidebar" }: { variant?: "sidebar" | "bottom"
             href={href}
             aria-current={active ? "page" : undefined}
             className={clsx(
-              "flex items-center rounded-md text-sm transition-colors",
+              "flex items-center text-sm transition-all",
               isBottom
-                ? "flex-1 flex-col justify-center gap-1 px-2 py-1.5 min-h-[48px]"
-                : "gap-3 px-3 py-2",
+                ? "flex-1 flex-col justify-center gap-1 px-2 py-1.5 min-h-[48px] rounded-xl"
+                : "gap-3 px-3 py-2 rounded-xl",
               active
-                ? "bg-surface-2 font-medium text-primary"
-                : "text-ink-muted hover:bg-surface hover:text-ink"
+                ? "bg-surface font-medium text-primary shadow-neu-in"
+                : "text-ink-muted hover:text-ink"
             )}
           >
             <Icon className={clsx(isBottom ? "h-5 w-5" : "h-4 w-4")} aria-hidden />

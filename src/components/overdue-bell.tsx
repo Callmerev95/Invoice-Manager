@@ -41,7 +41,7 @@ export function OverdueBell({ items }: { items: OverdueItem[] }) {
             ? "Notifikasi: tidak ada invoice lewat jatuh tempo"
             : `Notifikasi: ${count} invoice lewat jatuh tempo`
         }
-        className="relative inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md px-2 text-ink-muted transition-colors hover:bg-surface hover:text-ink"
+        className="relative inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl px-2 text-ink-muted transition-all hover:text-ink hover:shadow-neu-sm"
       >
         <Bell className="h-5 w-5" aria-hidden />
         {count > 0 ? (
@@ -58,9 +58,9 @@ export function OverdueBell({ items }: { items: OverdueItem[] }) {
         <div
           role="region"
           aria-label="Invoice lewat jatuh tempo"
-          className="absolute right-0 z-30 mt-2 w-80 max-w-[calc(100vw-2rem)] overflow-hidden rounded-lg border border-line bg-surface"
+          className="absolute right-0 z-30 mt-2 w-80 max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl bg-surface shadow-neu-out"
         >
-          <p className="border-b border-line px-4 py-2.5 text-sm font-semibold text-ink">
+          <p className="border-b border-line/60 px-4 py-2.5 text-sm font-semibold text-ink">
             {count === 0
               ? "Lewat jatuh tempo"
               : `Lewat jatuh tempo (${count})`}
@@ -70,7 +70,7 @@ export function OverdueBell({ items }: { items: OverdueItem[] }) {
               Tidak ada yang lewat jatuh tempo.
             </p>
           ) : (
-            <ul className="max-h-80 divide-y divide-line overflow-y-auto">
+            <ul className="max-h-80 divide-y divide-line/60 overflow-y-auto">
               {items.map((it) => (
                 <li key={it.id}>
                   <Link
