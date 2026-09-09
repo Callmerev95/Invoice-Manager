@@ -9,6 +9,7 @@ import {
 import { assetPublicUrl } from "@/lib/template-assets";
 import { formatRupiah, formatDate } from "@/lib/invoices";
 import { formatQuantity } from "@/lib/invoice-vm";
+import { AppFooter } from "@/components/app-footer";
 
 function accentOf(raw: string | null): string | null {
   return raw && /^#[0-9a-fA-F]{6}$/.test(raw) ? raw : null;
@@ -248,9 +249,7 @@ export default async function PublicInvoicePage({
             </footer>
           ) : null}
 
-          <p className="mt-6 text-center text-xs text-neutral-500">
-            Dibuat dengan Invoice Manager
-          </p>
+          <AppFooter tone="light" />
         </article>
       </div>
     </main>

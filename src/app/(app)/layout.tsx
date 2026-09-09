@@ -1,5 +1,6 @@
 import { LogOut } from "lucide-react";
 import { AppNav } from "@/components/app-nav";
+import { AppFooter } from "@/components/app-footer";
 import { OverdueBellSlot } from "@/components/overdue-bell-slot";
 
 export default function AppLayout({
@@ -38,6 +39,7 @@ export default function AppLayout({
         </div>
         <div className="mx-auto max-w-6xl px-4 pb-24 pt-4 md:px-8 md:pb-12">
           {children}
+          <AppFooter />
         </div>
       </main>
 
