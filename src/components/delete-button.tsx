@@ -23,7 +23,7 @@ export function DeleteButton({
       <input type="hidden" name="id" value={id} />
       <button
         type="submit"
-        className="inline-flex items-center gap-2 rounded-md border border-danger/40 px-3 py-1.5 text-sm text-danger hover:bg-danger/10"
+        className="inline-flex items-center gap-2 rounded-xl bg-surface px-3 py-1.5 text-sm text-danger shadow-neu-sm transition-all hover:bg-danger/10 active:shadow-neu-in"
       >
         {children}
       </button>

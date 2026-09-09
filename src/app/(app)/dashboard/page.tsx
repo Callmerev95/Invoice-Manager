@@ -68,7 +68,7 @@ export default async function DashboardPage({
         </div>
         <Link
           href="/templates"
-          className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-bg hover:bg-primary-hover"
+          className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-bg shadow-neu-sm transition-all hover:bg-primary-hover active:shadow-neu-in"
         >
           <Plus className="h-4 w-4" aria-hidden />
           Buat invoice
@@ -76,7 +76,7 @@ export default async function DashboardPage({
       </header>
 
       {isDemoEmail(user.email) ? (
-        <p className="rounded-md border border-line-strong bg-surface px-4 py-3 text-sm text-ink-muted">
+        <p className="rounded-2xl bg-surface px-4 py-3 text-sm text-ink-muted shadow-neu-out">
           Ini akun demo. Data berantakan?{" "}
           <Link
             href="/dev/seed"
@@ -115,15 +115,15 @@ export default async function DashboardPage({
             <p className="text-sm text-ink-muted">Belum ada invoice.</p>
             <Link
               href="/templates"
-              className="mt-4 inline-flex items-center gap-2 rounded-md border border-line-strong px-3 py-1.5 text-sm text-ink hover:bg-surface-2"
+              className="mt-4 inline-flex items-center gap-2 rounded-xl bg-surface px-3 py-1.5 text-sm text-ink shadow-neu-sm transition-all hover:bg-surface-2 active:shadow-neu-in"
             >
               Buat dari template
             </Link>
           </div>
         ) : (
-          <div className="overflow-x-auto rounded-lg border border-line">
+          <div className="overflow-hidden rounded-2xl bg-surface shadow-neu-in">
             <table className="w-full text-left text-sm">
-              <thead className="bg-surface text-xs uppercase tracking-wide text-ink-faint">
+              <thead className="text-xs uppercase tracking-wide text-ink-faint">
                 <tr>
                   <th scope="col" className="px-4 py-2.5 font-medium">Invoice</th>
                   <th scope="col" className="px-4 py-2.5 font-medium">Klien</th>
@@ -132,9 +132,9 @@ export default async function DashboardPage({
                   <th scope="col" className="px-4 py-2.5 text-right font-medium">Sisa</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-line">
+              <tbody className="divide-y divide-line/60">
                 {recent.rows.map((inv) => (
-                  <tr key={inv.id} className="transition-colors hover:bg-surface/60">
+                  <tr key={inv.id} className="transition-colors hover:bg-surface-2/50">
                     <td className="px-4 py-3 font-medium text-ink">{inv.number}</td>
                     <td className="px-4 py-3 text-ink-muted">{inv.clientName || "—"}</td>
                     <td className="hidden px-4 py-3 text-ink-muted sm:table-cell">
@@ -176,7 +176,7 @@ function StatCard({
   tone?: "default" | "danger";
 }) {
   return (
-    <div className="rounded-lg border border-line bg-surface p-4">
+    <div className="rounded-2xl bg-surface p-4 shadow-neu-out">
       <p className="text-xs uppercase tracking-wide text-ink-faint">{label}</p>
       <p
         className={`mt-1.5 text-xl font-semibold tabular-nums ${

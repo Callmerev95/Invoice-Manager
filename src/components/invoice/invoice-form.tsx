@@ -111,7 +111,7 @@ export function InvoiceForm({ template }: { template: TemplatePick }) {
         />
       </section>
 
-      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line pt-5">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line/60 pt-5">
         <p className="text-sm text-ink-muted">
           Nomor berikutnya:{" "}
           <span className="tabular-nums font-medium text-ink">
@@ -125,7 +125,7 @@ export function InvoiceForm({ template }: { template: TemplatePick }) {
         <div className="flex items-center gap-3">
           <Link
             href="/invoices"
-            className="inline-flex items-center rounded-md border border-line-strong px-4 py-2 text-sm text-ink hover:bg-surface-2"
+            className="inline-flex items-center rounded-xl bg-surface px-4 py-2 text-sm text-ink shadow-neu-sm transition-all hover:bg-surface-2 active:shadow-neu-in"
           >
             Batal
           </Link>

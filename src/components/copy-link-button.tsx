@@ -26,7 +26,7 @@ export function CopyLinkButton({
     <button
       type="button"
       onClick={copy}
-      className="inline-flex items-center gap-2 rounded-md border border-line-strong px-3 py-1.5 text-sm text-ink transition-colors hover:bg-surface-2"
+      className="inline-flex items-center gap-2 rounded-xl bg-surface px-3 py-1.5 text-sm text-ink shadow-neu-sm transition-all hover:bg-surface-2 active:shadow-neu-in"
     >
       {copied ? (
         <Check className="h-4 w-4" aria-hidden />

@@ -18,12 +18,12 @@ export default function Loading() {
         ))}
       </nav>
 
-      <div className="overflow-hidden rounded-lg border border-line">
-        <Sk className="h-9 w-full rounded-none border-b border-line bg-surface" />
+      <div className="overflow-hidden rounded-2xl bg-surface shadow-neu-in">
+        <Sk className="h-9 w-full rounded-none bg-surface" />
         {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
           <div
             key={i}
-            className="flex items-center gap-4 border-b border-line px-4 py-3 last:border-b-0"
+            className="flex items-center gap-4 border-b border-line/60 px-4 py-3 last:border-b-0"
           >
             <Sk className="h-4 w-28" />
             <Sk className="h-4 w-32" />

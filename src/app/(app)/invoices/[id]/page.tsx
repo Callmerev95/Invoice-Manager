@@ -92,7 +92,7 @@ export default async function InvoiceDetailPage({
               <Link
                 href={`/v/${vm.token}`}
                 target="_blank"
-                className="inline-flex items-center gap-2 rounded-md border border-line-strong px-3 py-1.5 text-sm text-ink hover:bg-surface-2"
+                className="inline-flex items-center gap-2 rounded-xl bg-surface px-3 py-1.5 text-sm text-ink shadow-neu-sm transition-all hover:bg-surface-2 active:shadow-neu-in"
               >
                 <ExternalLink className="h-4 w-4" aria-hidden />
                 Halaman klien
@@ -102,7 +102,7 @@ export default async function InvoiceDetailPage({
               />
               <Link
                 href={`/invoices/${vm.id}/pdf`}
-                className="inline-flex items-center gap-2 rounded-md border border-line-strong px-3 py-1.5 text-sm text-ink hover:bg-surface-2"
+                className="inline-flex items-center gap-2 rounded-xl bg-surface px-3 py-1.5 text-sm text-ink shadow-neu-sm transition-all hover:bg-surface-2 active:shadow-neu-in"
               >
                 <Download className="h-4 w-4" aria-hidden />
                 Unduh PDF
@@ -139,8 +139,8 @@ export default async function InvoiceDetailPage({
 function IssuedView({ vm }: { vm: InvoiceVM }) {
   return (
     <div className="space-y-6">
-      <section className="overflow-hidden rounded-lg border border-line">
-        <div className="w-full border-b border-line bg-primary px-5 py-5 text-bg">
+      <section className="overflow-hidden rounded-2xl bg-surface shadow-neu-out">
+        <div className="w-full bg-primary px-5 py-5 text-bg">
           <h2 className="text-sm font-medium uppercase tracking-wide opacity-80">
             {vm.invoiceTitle || "Invoice"}
           </h2>
@@ -163,9 +163,9 @@ function IssuedView({ vm }: { vm: InvoiceVM }) {
         </dl>
       </section>
 
-      <section className="overflow-hidden rounded-lg border border-line">
+      <section className="overflow-hidden rounded-2xl bg-surface shadow-neu-in">
         <table className="w-full text-left text-sm">
-          <thead className="bg-surface text-xs uppercase tracking-wide text-ink-faint">
+          <thead className="text-xs uppercase tracking-wide text-ink-faint">
             <tr>
               <th scope="col" className="px-4 py-2.5 font-medium">Deskripsi</th>
               <th scope="col" className="px-4 py-2.5 text-right font-medium">Jumlah</th>
@@ -173,7 +173,7 @@ function IssuedView({ vm }: { vm: InvoiceVM }) {
               <th scope="col" className="px-4 py-2.5 text-right font-medium">Subtotal</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-line">
+          <tbody className="divide-y divide-line/60">
             {vm.items.map((it) => (
               <tr key={it.id ?? it.position}>
                 <td className="px-4 py-3">{it.description || "—"}</td>
@@ -189,7 +189,7 @@ function IssuedView({ vm }: { vm: InvoiceVM }) {
       </section>
 
       {vm.paymentTo ? (
-        <section className="rounded-lg border border-line p-5">
+        <section className="rounded-2xl bg-surface p-5 shadow-neu-out">
           <h2 className="text-base font-semibold">Pembayaran</h2>
           <p className="mt-2 whitespace-pre-line text-sm text-ink-muted">{vm.paymentTo}</p>
         </section>
@@ -204,7 +204,7 @@ function IssuedView({ vm }: { vm: InvoiceVM }) {
           </p>
         </div>
         {vm.payments.length > 0 ? (
-          <ul className="divide-y divide-line rounded-lg border border-line">
+          <ul className="divide-y divide-line/60 rounded-2xl bg-surface shadow-neu-out">
             {[...vm.payments].reverse().map((p) => (
               <li key={p.id} className="flex items-center justify-between gap-3 px-4 py-3">
                 <div>
@@ -239,7 +239,7 @@ function IssuedView({ vm }: { vm: InvoiceVM }) {
           </p>
         </div>
         {vm.adjustments.length > 0 ? (
-          <ul className="divide-y divide-line rounded-lg border border-line">
+          <ul className="divide-y divide-line/60 rounded-2xl bg-surface shadow-neu-out">
             {[...vm.adjustments].reverse().map((a) => (
               <li key={a.id} className="flex items-center justify-between gap-3 px-4 py-3">
                 <div>

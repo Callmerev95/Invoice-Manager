@@ -55,7 +55,11 @@ function VisualUploader({
   hint: string;
 }) {
   const [path, setPath] = useState(initialPath);
-  const [preview, setPreview] = useState<string | null>(null);
+  // URL publik langsung dari path tersimpan agar form edit menampilkan
+  // thumbnail lama; getPublicUrl sinkron (tanpa fetch).
+  const [preview, setPreview] = useState<string | null>(() =>
+    initialPath ? assetPublicUrl(createClient(), initialPath) : null
+  );
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -121,13 +125,13 @@ function VisualUploader({
   return (
     <div className="space-y-2">
       <input type="hidden" name={fieldName} value={path} />
-      {preview || path ? (
+      {preview ? (
         <div className="flex items-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={preview ?? ""}
+            src={preview}
             alt=""
-            className="max-h-20 max-w-48 rounded-md border border-line bg-surface-2 object-contain p-1"
+            className="max-h-20 max-w-48 rounded-xl bg-surface-2 object-contain p-1 shadow-neu-sm"
           />
           <Button
             type="button"
@@ -138,6 +142,10 @@ function VisualUploader({
             {busy ? "Memproses…" : "Hapus"}
           </Button>
         </div>
+      ) : path ? (
+        <p className="text-sm text-ink-muted">
+          Gambar tersimpan — pilih file di bawah untuk mengganti.
+        </p>
       ) : (
         <p className="text-sm text-ink-faint">Belum ada gambar.</p>
       )}
@@ -387,7 +395,7 @@ export function TemplateForm({
       <div
         className={clsx(
           "flex items-center justify-between gap-3",
-          preview ? "border-t border-line pt-5" : ""
+          preview ? "border-t border-line/60 pt-5" : ""
         )}
       >
         {preview ? (
@@ -401,7 +409,7 @@ export function TemplateForm({
         <div className="flex items-center gap-3">
           <Link
             href="/templates"
-            className="inline-flex items-center rounded-md border border-line-strong px-4 py-2 text-sm text-ink hover:bg-surface-2"
+            className="inline-flex items-center rounded-xl bg-surface px-4 py-2 text-sm text-ink shadow-neu-sm transition-all hover:bg-surface-2 active:shadow-neu-in"
           >
             Batal
           </Link>

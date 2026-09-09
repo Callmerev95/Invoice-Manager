@@ -12,7 +12,7 @@ function OverdueBellFallback() {
   return (
     <span
       aria-hidden
-      className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-md px-2 text-ink-faint"
+      className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center rounded-xl px-2 text-ink-faint"
     >
       <Bell className="h-5 w-5" />
     </span>

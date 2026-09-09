@@ -70,7 +70,7 @@ export default async function InvoicesPage({
         </div>
         <Link
           href="/invoices/new"
-          className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-bg hover:bg-primary-hover"
+          className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-bg shadow-neu-sm transition-all hover:bg-primary-hover active:shadow-neu-in"
         >
           <Plus className="h-4 w-4" aria-hidden />
           Invoice baru
@@ -93,10 +93,10 @@ export default async function InvoicesPage({
             href={filterHref(key)}
             aria-current={filter === key ? "page" : undefined}
             className={clsx(
-              "rounded-full border px-3 py-1 text-sm tabular-nums transition-colors",
+              "rounded-full bg-surface px-3 py-1 text-sm tabular-nums shadow-neu-sm transition-all",
               filter === key
-                ? "border-primary/50 bg-surface-2 font-medium text-primary"
-                : "border-line text-ink-muted hover:text-ink"
+                ? "font-medium text-primary shadow-neu-in"
+                : "text-ink-muted hover:text-ink"
             )}
           >
             {label} · {counts.get(key) ?? 0}
@@ -113,9 +113,9 @@ export default async function InvoicesPage({
           </p>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-lg border border-line">
+        <div className="overflow-hidden rounded-2xl bg-surface shadow-neu-in">
           <table className="w-full text-left text-sm">
-            <thead className="bg-surface text-xs uppercase tracking-wide text-ink-faint">
+            <thead className="text-xs uppercase tracking-wide text-ink-faint">
               <tr>
                 <th scope="col" className="px-4 py-2.5 font-medium">Invoice</th>
                 <th scope="col" className="px-4 py-2.5 font-medium">Klien</th>
@@ -125,9 +125,9 @@ export default async function InvoicesPage({
                 <th scope="col" className="px-4 py-2.5 text-right font-medium">Sisa</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-line">
+            <tbody className="divide-y divide-line/60">
               {summaries.map((inv) => (
-                <tr key={inv.id} className="transition-colors hover:bg-surface/60">
+                <tr key={inv.id} className="transition-colors hover:bg-surface-2/50">
                   <td className="px-4 py-3">
                     <Link
                       href={`/invoices/${inv.id}`}

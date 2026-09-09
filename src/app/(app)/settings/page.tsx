@@ -45,7 +45,7 @@ export default async function SettingsPage({
 
       <section
         aria-labelledby="settings-account"
-        className="rounded-lg border border-line bg-surface p-5"
+        className="rounded-2xl bg-surface p-5 shadow-neu-out"
       >
         <h2 id="settings-account" className="text-base font-semibold">
           Akun
@@ -61,7 +61,7 @@ export default async function SettingsPage({
             <form action="/auth/signout" method="POST">
               <button
                 type="submit"
-                className="inline-flex items-center gap-2 rounded-md border border-line-strong px-3 py-1.5 text-sm text-ink transition-colors hover:bg-surface-2"
+                className="inline-flex items-center gap-2 rounded-xl bg-surface px-3 py-1.5 text-sm text-ink shadow-neu-sm transition-all hover:bg-surface-2 active:shadow-neu-in"
               >
                 <LogOut className="h-4 w-4" aria-hidden />
                 Keluar
@@ -73,7 +73,7 @@ export default async function SettingsPage({
 
       <section
         aria-labelledby="settings-password"
-        className="rounded-lg border border-line bg-surface p-5"
+        className="rounded-2xl bg-surface p-5 shadow-neu-out"
       >
         <h2 id="settings-password" className="text-base font-semibold">
           Kata sandi
@@ -86,7 +86,7 @@ export default async function SettingsPage({
 
       <section
         aria-labelledby="settings-series"
-        className="rounded-lg border border-line bg-surface p-5"
+        className="rounded-2xl bg-surface p-5 shadow-neu-out"
       >
         <h2 id="settings-series" className="text-base font-semibold">
           Nomor seri
@@ -104,7 +104,7 @@ export default async function SettingsPage({
             {patterns.map((pattern) => (
               <div
                 key={pattern}
-                className="flex flex-wrap items-baseline justify-between gap-2 border-t border-line pt-3 first:border-t-0 first:pt-0"
+                className="flex flex-wrap items-baseline justify-between gap-2 border-t border-line/60 pt-3 first:border-t-0 first:pt-0"
               >
                 <dt className="tabular-nums text-ink-muted">{pattern}</dt>
                 <dd className="tabular-nums font-medium text-ink">

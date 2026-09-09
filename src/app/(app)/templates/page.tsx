@@ -45,7 +45,7 @@ export default async function TemplatesPage() {
         </div>
         <Link
           href="/templates/new"
-          className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-bg hover:bg-primary-hover"
+          className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-bg shadow-neu-sm transition-all hover:bg-primary-hover active:shadow-neu-in"
         >
           <Plus className="h-4 w-4" aria-hidden />
           Template baru
@@ -59,7 +59,7 @@ export default async function TemplatesPage() {
           </p>
           <Link
             href="/templates/new"
-            className="mt-4 inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-bg hover:bg-primary-hover"
+            className="mt-4 inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-bg shadow-neu-sm transition-all hover:bg-primary-hover active:shadow-neu-in"
           >
             <Plus className="h-4 w-4" aria-hidden />
             Buat template pertama
@@ -72,7 +72,7 @@ export default async function TemplatesPage() {
             return (
               <div
                 key={t.id}
-                className="group rounded-lg border border-line bg-surface p-4 transition-colors hover:border-line-strong"
+                className="rounded-2xl bg-surface p-4 shadow-neu-out transition-shadow hover:shadow-neu-in"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>
@@ -113,7 +113,7 @@ export default async function TemplatesPage() {
                 </dl>
                 <Link
                   href={`/templates/${t.id}/edit`}
-                  className="mt-4 inline-flex w-full items-center justify-center rounded-md border border-line-strong px-3 py-1.5 text-sm text-ink transition-colors hover:bg-surface-2"
+                  className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-surface px-3 py-1.5 text-sm text-ink shadow-neu-sm transition-all hover:bg-surface-2 active:shadow-neu-in"
                 >
                   Edit template
                 </Link>

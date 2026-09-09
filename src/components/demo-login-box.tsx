@@ -25,7 +25,7 @@ export function DemoLoginBox() {
       <button
         type="button"
         onClick={fill}
-        className="mt-2 inline-flex min-h-[44px] items-center rounded-md border border-line-strong px-3 py-1.5 text-sm text-ink transition-colors hover:bg-surface-2"
+        className="mt-2 inline-flex min-h-[44px] items-center rounded-xl bg-surface px-3 py-1.5 text-sm text-ink shadow-neu-sm transition-all hover:bg-surface-2 active:shadow-neu-in"
       >
         {filled ? "Terisi — silakan tekan Masuk" : "Isi otomatis"}
       </button>

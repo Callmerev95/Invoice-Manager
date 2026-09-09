@@ -36,7 +36,7 @@ export function SeedButton() {
         <button
           type="submit"
           disabled={pending}
-          className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-bg transition-colors hover:bg-primary-hover disabled:opacity-60"
+          className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-bg shadow-neu-sm transition-all hover:bg-primary-hover disabled:opacity-60 disabled:shadow-none active:shadow-neu-in"
         >
           <Sparkles className="h-4 w-4" aria-hidden />
           {pending ? "Mengisi data…" : "Isi data contoh"}

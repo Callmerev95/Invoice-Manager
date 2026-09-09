@@ -37,7 +37,7 @@ export default async function NewInvoicePage({
         <Link
           href="/invoices"
           aria-label="Kembali ke daftar invoice"
-          className="rounded-md border border-line-strong p-2 text-ink-muted hover:text-ink"
+          className="rounded-xl bg-surface p-2 text-ink-muted shadow-neu-sm transition-all hover:text-ink active:shadow-neu-in"
         >
           <ChevronLeft className="h-4 w-4" aria-hidden />
         </Link>
@@ -64,7 +64,7 @@ export default async function NewInvoicePage({
             <li key={t.id}>
               <Link
                 href={`/invoices/new?template=${t.id}`}
-                className="flex h-full flex-col justify-between gap-4 rounded-lg border border-line p-5 transition-colors hover:border-primary/60 hover:bg-surface-2"
+                  className="flex h-full flex-col justify-between gap-4 rounded-2xl bg-surface p-5 shadow-neu-out transition-shadow hover:shadow-neu-in"
               >
                 <div>
                   <h2 className="font-medium text-ink">{t.name}</h2>
@@ -96,7 +96,7 @@ export default async function NewInvoicePage({
           </p>
           <Link
             href="/templates/new"
-            className="mt-4 inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-bg hover:bg-primary-hover"
+            className="mt-4 inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-bg shadow-neu-sm transition-all hover:bg-primary-hover active:shadow-neu-in"
           >
             <Plus className="h-4 w-4" aria-hidden />
             Buat template

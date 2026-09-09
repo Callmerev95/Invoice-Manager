@@ -117,7 +117,7 @@ export function DraftEditor({ invoice }: { invoice: InvoiceVM }) {
         />
       </section>
 
-      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line pt-5">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-line/60 pt-5">
         <p className="text-sm text-ink-muted">
           Nomor diberikan saat terbit (pola{" "}
           <span className="tabular-nums">{invoice.pattern || "INV-{yyyy}-{seq:3}"}</span>).

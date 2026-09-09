@@ -101,7 +101,7 @@ export function OverdueBell({ items }: { items: OverdueItem[] }) {
             <Link
               href="/invoices?status=overdue"
               onClick={() => setOpen(false)}
-              className="block border-t border-line px-4 py-2.5 text-center text-sm font-medium text-primary hover:text-primary-hover"
+              className="block border-t border-line/60 px-4 py-2.5 text-center text-sm font-medium text-primary hover:text-primary-hover"
             >
               Lihat semua
             </Link>

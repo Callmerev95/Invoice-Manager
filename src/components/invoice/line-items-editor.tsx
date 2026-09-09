@@ -72,7 +72,7 @@ export function LineItemsEditor({
               onChange={(e) => updateRow(item.key, { description: e.target.value })}
               placeholder="Deskripsi item atau jasa"
               aria-label="Deskripsi"
-              className="w-full min-h-[44px] rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink placeholder:text-ink-faint focus:border-primary focus:outline-none"
+              className="w-full min-h-[44px] rounded-xl border-0 bg-surface px-3 py-2 text-sm text-ink shadow-neu-in placeholder:text-ink-faint focus:outline-none"
             />
             <input
               name="item_quantity"
@@ -81,7 +81,7 @@ export function LineItemsEditor({
               inputMode="decimal"
               placeholder="1"
               aria-label="Jumlah"
-              className="w-full min-h-[44px] rounded-md border border-line bg-surface px-3 py-2 text-right text-sm tabular-nums text-ink placeholder:text-ink-faint focus:border-primary focus:outline-none"
+              className="w-full min-h-[44px] rounded-xl border-0 bg-surface px-3 py-2 text-right text-sm tabular-nums text-ink shadow-neu-in placeholder:text-ink-faint focus:outline-none"
             />
             <RupiahInput
               name="item_unit_price_rupiah"
@@ -109,13 +109,13 @@ export function LineItemsEditor({
       <button
         type="button"
         onClick={addRow}
-        className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-md border border-line-strong px-3 py-1.5 text-sm text-ink hover:bg-surface-2"
+        className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-xl bg-surface px-3 py-1.5 text-sm text-ink shadow-neu-sm transition-all hover:bg-surface-2 active:shadow-neu-in"
       >
         <Plus className="h-4 w-4" aria-hidden />
         Tambah baris
       </button>
 
-      <div className="space-y-1.5 border-t border-line pt-4 text-sm sm:ml-auto sm:w-72">
+      <div className="space-y-1.5 border-t border-line/60 pt-4 text-sm sm:ml-auto sm:w-72">
         <div className="flex justify-between text-ink-muted">
           <span>Subtotal</span>
           <span className="tabular-nums">{formatRupiah(subtotalSen)}</span>
@@ -124,7 +124,7 @@ export function LineItemsEditor({
           <span>{taxLabel || "Pajak"}</span>
           <span className="tabular-nums">{formatRupiah(taxSen)}</span>
         </div>
-        <div className="flex justify-between border-t border-line pt-2 font-semibold text-ink">
+        <div className="flex justify-between border-t border-line/60 pt-2 font-semibold text-ink">
           <span>Total</span>
           <span className="tabular-nums">{formatRupiah(totalSen)}</span>
         </div>

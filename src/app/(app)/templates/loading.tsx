@@ -14,7 +14,7 @@ export default function Loading() {
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {[0, 1, 2].map((i) => (
-          <div key={i} className="rounded-lg border border-line bg-surface p-4">
+          <div key={i} className="rounded-2xl bg-surface p-4 shadow-neu-out">
             <div className="flex items-start justify-between gap-3">
               <div className="space-y-2">
                 <Sk className="h-5 w-32" />

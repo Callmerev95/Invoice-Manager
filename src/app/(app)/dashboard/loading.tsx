@@ -14,7 +14,7 @@ export default function Loading() {
 
       <section aria-label="Ringkasan" className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {[0, 1, 2, 3].map((i) => (
-          <div key={i} className="rounded-lg border border-line bg-surface p-4">
+          <div key={i} className="rounded-2xl bg-surface p-4 shadow-neu-out">
             <Sk className="h-3 w-20" />
             <Sk className="mt-2.5 h-6 w-24" />
           </div>
@@ -26,12 +26,12 @@ export default function Loading() {
           <Sk className="h-5 w-36" />
           <Sk className="h-4 w-24" />
         </div>
-        <div className="overflow-hidden rounded-lg border border-line">
-          <Sk className="h-9 w-full rounded-none border-b border-line bg-surface" />
+        <div className="overflow-hidden rounded-2xl bg-surface shadow-neu-in">
+          <Sk className="h-9 w-full rounded-none bg-surface" />
           {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
             <div
               key={i}
-              className="flex items-center gap-4 border-b border-line px-4 py-3 last:border-b-0"
+              className="flex items-center gap-4 border-b border-line/60 px-4 py-3 last:border-b-0"
             >
               <Sk className="h-4 w-28" />
               <Sk className="h-4 w-32" />
