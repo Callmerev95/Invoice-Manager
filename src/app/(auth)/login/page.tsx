@@ -52,6 +52,14 @@ export default async function LoginPage({
         <Button type="submit" className="w-full">
           Masuk
         </Button>
+        <p className="text-center text-sm">
+          <Link
+            href="/forgot-password"
+            className="font-medium text-primary hover:text-primary-hover"
+          >
+            Lupa kata sandi?
+          </Link>
+        </p>
       </form>
 
       <p className="mt-6 text-center text-sm text-ink-muted">
