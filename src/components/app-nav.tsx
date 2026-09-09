@@ -36,7 +36,7 @@ export function AppNav({ variant = "sidebar" }: { variant?: "sidebar" | "bottom"
             className={clsx(
               "flex items-center rounded-md text-sm transition-colors",
               isBottom
-                ? "flex-1 flex-col justify-center gap-1 py-1.5"
+                ? "flex-1 flex-col justify-center gap-1 px-2 py-1.5 min-h-[48px]"
                 : "gap-3 px-3 py-2",
               active
                 ? "bg-surface-2 font-medium text-primary"
