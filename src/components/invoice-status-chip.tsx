@@ -34,10 +34,7 @@ export function InvoiceStatusChip({
         {labels[status]}
       </span>
       {hasAdjustment ? (
-        <span
-          title="Ada penyesuaian"
-          className="inline-flex items-center gap-1 rounded-full border border-line-strong px-2 py-0.5 text-xs text-ink-muted"
-        >
+        <span className="inline-flex items-center gap-1 rounded-full border border-line-strong px-2 py-0.5 text-xs text-ink-muted">
           <ArrowDownLeft className="h-3 w-3" aria-hidden />
           Penyesuaian
         </span>

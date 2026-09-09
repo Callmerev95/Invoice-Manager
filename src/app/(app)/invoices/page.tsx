@@ -76,7 +76,7 @@ export default async function InvoicesPage({
         </p>
       ) : null}
 
-      <nav aria-label="Filter status" className="flex gap-2">
+      <nav aria-label="Filter status" className="flex flex-wrap gap-2">
         {FILTERS.map(({ key, label }) => (
           <Link
             key={key}
@@ -103,7 +103,7 @@ export default async function InvoicesPage({
           </p>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-lg border border-line">
+        <div className="overflow-x-auto rounded-lg border border-line">
           <table className="w-full text-left text-sm">
             <thead className="bg-surface text-xs uppercase tracking-wide text-ink-faint">
               <tr>
@@ -117,7 +117,7 @@ export default async function InvoicesPage({
             </thead>
             <tbody className="divide-y divide-line">
               {summaries.map((inv) => (
-                <tr key={inv.id}>
+                <tr key={inv.id} className="transition-colors hover:bg-surface/60">
                   <td className="px-4 py-3">
                     <Link
                       href={`/invoices/${inv.id}`}
