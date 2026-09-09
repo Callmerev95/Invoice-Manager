@@ -13,6 +13,22 @@ function accentOf(raw: string | null): string | null {
   return raw && /^#[0-9a-fA-F]{6}$/.test(raw) ? raw : null;
 }
 
+function luminance(hex: string): number {
+  const [r, g, b] = [0, 2, 4].map((i) => {
+    const c = parseInt(hex.slice(i + 1, i + 3), 16) / 255;
+    return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+const FALLBACK_ACCENT = "#0B1211";
+
+function readableAccent(raw: string | null): string {
+  const accent = accentOf(raw) ?? FALLBACK_ACCENT;
+  const contrast = (1.05) / (luminance(accent) + 0.05);
+  return contrast >= 3 ? accent : FALLBACK_ACCENT;
+}
+
 export default async function PublicInvoicePage({
   params,
 }: {
@@ -27,7 +43,7 @@ export default async function PublicInvoicePage({
 
   const pub = data;
   const status = publicStatus(pub);
-  const accent = accentOf(pub.accent_color) ?? "#0B1211";
+  const accent = readableAccent(pub.accent_color);
   const balanceSen = pub.totals.subtotal_sen + pub.totals.tax_sen + pub.totals.adjustment_sen - pub.totals.paid_sen;
 
   return (
@@ -36,7 +52,7 @@ export default async function PublicInvoicePage({
         <div className="flex items-center justify-end">
           <Link
             href={`/v/${token}/pdf`}
-            className="inline-flex items-center gap-2 rounded-md bg-neutral-900 px-4 py-2 text-sm font-semibold text-white"
+            className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-md bg-neutral-900 px-4 py-2 text-sm font-semibold text-white hover:bg-neutral-700"
           >
             <Download className="h-4 w-4" aria-hidden />
             Unduh PDF
@@ -60,7 +76,7 @@ export default async function PublicInvoicePage({
                 pub.business_phone ||
                 pub.business_email ||
                 pub.business_website) && (
-                <p className="mt-2 whitespace-pre-line text-sm text-neutral-600">
+                <p className="mt-2 break-words whitespace-pre-line text-sm text-neutral-600">
                   {[pub.business_address, pub.business_phone, pub.business_email, pub.business_website]
                     .filter(Boolean)
                     .join("\n")}
@@ -99,11 +115,11 @@ export default async function PublicInvoicePage({
               <p className="text-sm text-neutral-600">{pub.client_email}</p>
             ) : null}
             {pub.client_address ? (
-              <p className="whitespace-pre-line text-sm text-neutral-600">{pub.client_address}</p>
+              <p className="break-words whitespace-pre-line text-sm text-neutral-600">{pub.client_address}</p>
             ) : null}
           </section>
 
-          <section className="overflow-hidden rounded-md border border-neutral-200">
+          <section className="overflow-x-auto rounded-md border border-neutral-200">
             <table className="w-full text-left text-sm">
               <thead className="bg-neutral-50 text-xs uppercase tracking-wide text-neutral-500">
                 <tr>
@@ -184,7 +200,7 @@ export default async function PublicInvoicePage({
               <h2 className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
                 Pembayaran dapat dilakukan ke
               </h2>
-              <p className="mt-2 whitespace-pre-line text-sm">{pub.payment_to}</p>
+              <p className="mt-2 break-words whitespace-pre-line text-sm">{pub.payment_to}</p>
             </section>
           ) : null}
 
@@ -193,7 +209,7 @@ export default async function PublicInvoicePage({
               <h2 className="text-xs font-semibold uppercase tracking-wide text-neutral-500">
                 Ketentuan pembayaran
               </h2>
-              <p className="mt-2 whitespace-pre-line text-sm">{pub.payment_terms}</p>
+              <p className="mt-2 break-words whitespace-pre-line text-sm">{pub.payment_terms}</p>
             </section>
           ) : null}
 
@@ -211,7 +227,7 @@ export default async function PublicInvoicePage({
             </footer>
           ) : null}
 
-          <p className="mt-6 text-center text-[11px] text-neutral-400">
+          <p className="mt-6 text-center text-xs text-neutral-500">
             Dibuat dengan Invoice Manager
           </p>
         </article>
