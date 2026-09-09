@@ -4,8 +4,8 @@
   "description": "Invoice untuk freelancer Indonesia.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#0B1211",
-  "theme_color": "#0B1211",
+  "background_color": "#141D19",
+  "theme_color": "#141D19",
   "icons": [
     {
       "src": "/icon-192.png",

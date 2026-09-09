@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #0b1211;
-  --color-surface: #121c19;
-  --color-surface-2: #1a2622;
+  --color-bg: #141d19;
+  --color-surface: #141d19;
+  --color-surface-2: #1c2622;
   --color-line: #2a3a34;
   --color-line-strong: #3a4e46;
   --color-ink: #e4ece8;
@@ -14,7 +14,13 @@
   --color-primary-strong: #17a674;
   --color-warning: #d5a83e;
   --color-danger: #e05a5a;
-  --font-sans: var(--font-familjen), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-sans: var(--font-rubik), ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  /* Neumorphism Forest: bayangan ganda — gelap menekan, terang mengangkat.
+     raised = aksi/permukaan interaktif; inset = input/wadah/keadaan aktif. */
+  --shadow-neu-out: 8px 8px 16px #0c1210, -8px -8px 16px #2a3a34;
+  --shadow-neu-in: inset 6px 6px 12px #0c1210, inset -6px -6px 12px #2a3a34;
+  --shadow-neu-sm: 4px 4px 8px #0c1210, -4px -4px 8px #2a3a34;
 }
 
 @layer base {

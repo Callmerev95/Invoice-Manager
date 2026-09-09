@@ -1,9 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Familjen_Grotesk } from "next/font/google";
+import { Rubik } from "next/font/google";
 import "./globals.css";
 
-const familjenGrotesk = Familjen_Grotesk({
-  variable: "--font-familjen",
+const rubik = Rubik({
+  variable: "--font-rubik",
   subsets: ["latin"],
   display: "optional",
 });
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0B1211",
+  themeColor: "#141D19",
   viewportFit: "cover",
 };
 
@@ -37,7 +37,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id" className={`${familjenGrotesk.variable} h-full`}>
+    <html lang="id" className={`${rubik.variable} h-full`}>
       <body className="min-h-full">{children}</body>
     </html>
   );
