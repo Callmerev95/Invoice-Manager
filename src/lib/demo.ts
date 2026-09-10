@@ -1,5 +1,5 @@
 /** Akun demo publik (kredensial fake, hanya untuk environment demo terpisah). */
-export const DEMO_EMAIL = "demo@contoh.test";
+export const DEMO_EMAIL = "demo@test.com";
 
 function demoEmailList(): string[] {
   return (process.env.DEMO_EMAILS ?? "")
