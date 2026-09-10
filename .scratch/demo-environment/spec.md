@@ -21,7 +21,7 @@ Environment demo terisolasi penuh (project Supabase + deployment sendiri) dengan
 
 ## Implementation Decisions
 
-- Isolasi: project Supabase baru (migrasi repo di-apply berurutan) + deployment hosting terpisah; user demo `demo@contoh.test` dibuat manual sekali.
+- Isolasi: project Supabase baru (migrasi repo di-apply berurutan) + deployment hosting terpisah; user demo `demo@test.com` dibuat manual sekali.
 - Guard ganda: seeder jalan bila non-prod, atau bila prod + `ALLOW_DEMO_SEED=true` + email ∈ `DEMO_EMAILS`. Halaman seed ikut flag env; aksi cek email juga.
 - Seed upgrade: 25 invoice (pola status deterministik) + template pertama dipasangi logo/tanda tangan/aksen contoh dari `public/demo/` (ringan, <25KB) yang diupload aksi seed ke `template-assets`.
 - Login: kotak demo (hanya render bila `NEXT_PUBLIC_DEMO_PASSWORD` diset — prod tidak set → tidak render) berisi email + isi-otomatis.
