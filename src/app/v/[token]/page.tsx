@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { Download } from "lucide-react";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
@@ -10,6 +11,11 @@ import { assetPublicUrl } from "@/lib/template-assets";
 import { formatRupiah, formatDate } from "@/lib/invoices";
 import { formatQuantity } from "@/lib/invoice-vm";
 import { AppFooter } from "@/components/app-footer";
+
+export const metadata: Metadata = {
+  title: "Invoice",
+  robots: { index: false, follow: false },
+};
 
 function accentOf(raw: string | null): string | null {
   return raw && /^#[0-9a-fA-F]{6}$/.test(raw) ? raw : null;

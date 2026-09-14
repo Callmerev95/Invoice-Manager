@@ -11,13 +11,39 @@ import {
   Smartphone,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import {
+  APP_AUTHOR,
+  APP_NAME,
+  PORTFOLIO_URL,
+  SITE_DESCRIPTION,
+  SITE_TAGLINE,
+  SITE_URL,
+} from "@/lib/app-meta";
 import { AppFooter } from "@/components/app-footer";
 import { Reveal } from "@/components/reveal";
 
 export const metadata: Metadata = {
-  title: "Invoice Manager — tagihan freelancer yang tepercaya",
-  description:
-    "Buat, terbitkan, dan kejar invoice secara profesional: dokumen terkunci, status jelas, halaman klien resmi.",
+  title: { absolute: `${APP_NAME} — ${SITE_TAGLINE}` },
+  description: SITE_DESCRIPTION,
+  alternates: { canonical: "/" },
+  openGraph: {
+    url: "/",
+    title: `${APP_NAME} — ${SITE_TAGLINE}`,
+    description: SITE_DESCRIPTION,
+  },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: APP_NAME,
+  url: SITE_URL,
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Web",
+  description: SITE_DESCRIPTION,
+  inLanguage: "id-ID",
+  offers: { "@type": "Offer", price: "0", priceCurrency: "IDR" },
+  author: { "@type": "Person", name: APP_AUTHOR, url: PORTFOLIO_URL },
 };
 
 const NEU_OUT = "shadow-neu-out";
@@ -92,6 +118,10 @@ export default async function LandingPage() {
 
   return (
     <main className="min-h-screen bg-bg text-ink">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="mx-auto max-w-5xl px-4 py-5 sm:px-8">
         <nav className="neu-entrance flex items-center justify-between" aria-label="Utama">
           <span className="text-sm font-bold tracking-tight">Invoice Manager</span>

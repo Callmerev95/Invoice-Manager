@@ -1,4 +1,10 @@
-import { APP_AUTHOR, APP_MAJOR, APP_NAME, APP_VERSION } from "@/lib/app-meta";
+import {
+  APP_AUTHOR,
+  APP_MAJOR,
+  APP_NAME,
+  APP_VERSION,
+  PORTFOLIO_URL,
+} from "@/lib/app-meta";
 
 export function AppFooter({ tone = "dark" }: { tone?: "dark" | "light" }) {
   const year = new Date().getFullYear();
@@ -11,7 +17,15 @@ export function AppFooter({ tone = "dark" }: { tone?: "dark" | "light" }) {
       }
     >
       <p title={`v${APP_VERSION}`}>
-        © {year} {APP_AUTHOR} • {APP_NAME} V{APP_MAJOR}
+        © {year} {APP_NAME} V{APP_MAJOR} • Develop by{" "}
+        <a
+          href={PORTFOLIO_URL}
+          target="_blank"
+          rel="noopener"
+          className="underline decoration-dotted underline-offset-2 transition-colors hover:decoration-solid"
+        >
+          {APP_AUTHOR}
+        </a>
       </p>
     </footer>
   );

@@ -6,7 +6,7 @@ import { toTemplateDraft } from "@/lib/templates";
 import { TemplateForm } from "@/components/template/template-form";
 
 export const metadata: Metadata = {
-  title: "Edit template — Invoice Manager",
+  title: "Edit template",
 };
 
 export default async function EditTemplatePage({

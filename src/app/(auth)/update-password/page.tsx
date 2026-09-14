@@ -3,7 +3,7 @@ import { requireUser } from "@/lib/auth";
 import { UpdatePasswordForm } from "./form";
 
 export const metadata: Metadata = {
-  title: "Atur kata sandi baru — Invoice Manager",
+  title: "Atur kata sandi baru",
 };
 
 export default async function UpdatePasswordPage() {

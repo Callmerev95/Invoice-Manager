@@ -5,7 +5,7 @@ import { Field, Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
-  title: "Lupa kata sandi — Invoice Manager",
+  title: "Lupa kata sandi",
 };
 
 const ERRORS: Record<string, string> = {

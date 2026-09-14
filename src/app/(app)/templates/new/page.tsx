@@ -4,7 +4,7 @@ import { emptyTemplateDraft } from "@/lib/templates";
 import { TemplateForm } from "@/components/template/template-form";
 
 export const metadata: Metadata = {
-  title: "Template baru — Invoice Manager",
+  title: "Template baru",
 };
 
 export default async function NewTemplatePage() {

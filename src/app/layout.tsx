@@ -1,6 +1,14 @@
 import type { Metadata, Viewport } from "next";
 import { Rubik } from "next/font/google";
 import "./globals.css";
+import {
+  APP_AUTHOR,
+  APP_NAME,
+  PORTFOLIO_URL,
+  SITE_DESCRIPTION,
+  SITE_TAGLINE,
+  SITE_URL,
+} from "@/lib/app-meta";
 
 const rubik = Rubik({
   variable: "--font-rubik",
@@ -9,12 +17,41 @@ const rubik = Rubik({
 });
 
 export const metadata: Metadata = {
-  title: "Invoice Manager",
-  description: "Invoice untuk freelancer Indonesia.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: `${APP_NAME} — ${SITE_TAGLINE}`,
+    template: `%s | ${APP_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: APP_NAME,
+  authors: [{ name: APP_AUTHOR, url: PORTFOLIO_URL }],
+  creator: APP_AUTHOR,
+  publisher: APP_AUTHOR,
+  category: "business",
+  keywords: [
+    "invoice",
+    "invoice freelancer",
+    "aplikasi invoice",
+    "buat invoice online",
+    "tagihan klien",
+    "invoice Indonesia",
+  ],
+  openGraph: {
+    type: "website",
+    locale: "id_ID",
+    siteName: APP_NAME,
+    title: `${APP_NAME} — ${SITE_TAGLINE}`,
+    description: SITE_DESCRIPTION,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${APP_NAME} — ${SITE_TAGLINE}`,
+    description: SITE_DESCRIPTION,
+  },
   manifest: "/manifest.webmanifest",
   appleWebApp: {
     capable: true,
-    title: "Invoice Manager",
+    title: APP_NAME,
     statusBarStyle: "black-translucent",
   },
   icons: {

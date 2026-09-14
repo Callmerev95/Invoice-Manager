@@ -1,7 +1,12 @@
+import type { Metadata } from "next";
 import { LogOut } from "lucide-react";
 import { AppNav } from "@/components/app-nav";
 import { AppFooter } from "@/components/app-footer";
 import { OverdueBellSlot } from "@/components/overdue-bell-slot";
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 export default function AppLayout({
   children,

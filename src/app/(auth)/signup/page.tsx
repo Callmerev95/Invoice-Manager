@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { PasswordInput } from "@/components/ui/password-input";
 
 export const metadata: Metadata = {
-  title: "Daftar — Invoice Manager",
+  title: "Daftar",
 };
 
 const ERRORS: Record<string, string> = {

@@ -7,7 +7,7 @@ import { PasswordInput } from "@/components/ui/password-input";
 import { DemoLoginBox } from "@/components/demo-login-box";
 
 export const metadata: Metadata = {
-  title: "Masuk — Invoice Manager",
+  title: "Masuk",
 };
 
 const ERRORS: Record<string, string> = {
