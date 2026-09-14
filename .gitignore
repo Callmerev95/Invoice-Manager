@@ -41,6 +41,13 @@ yarn-error.log*
 # vercel
 .vercel
 
+# workspace lokal saja (tidak masuk repo)
+.scratch/
+docs/
+AGENTS.md
+CLAUDE.md
+CONTEXT.md
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
