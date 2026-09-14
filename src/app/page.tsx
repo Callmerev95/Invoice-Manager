@@ -18,6 +18,7 @@ import {
   SITE_DESCRIPTION,
   SITE_TAGLINE,
   SITE_URL,
+  DEMO_URL,
 } from "@/lib/app-meta";
 import { AppFooter } from "@/components/app-footer";
 import { Reveal } from "@/components/reveal";
@@ -102,8 +103,7 @@ const FEATURES = [
 ];
 
 function demoHref(): string {
-  const url = process.env.NEXT_PUBLIC_DEMO_URL;
-  return url && url.trim() !== "" ? url.trim() : "/login";
+  return DEMO_URL;
 }
 
 export default async function LandingPage() {

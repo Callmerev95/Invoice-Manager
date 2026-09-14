@@ -9,6 +9,9 @@ export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.trim().replace(/\/+$/, "") ||
   "https://invoice-manager.callmerev.my.id";
 export const PORTFOLIO_URL = "https://callmerev.my.id";
+export const DEMO_URL =
+  process.env.NEXT_PUBLIC_DEMO_URL?.trim().replace(/\/+$/, "") ||
+  "https://invoice-manager-demo.callmerev.my.id";
 export const SITE_TAGLINE = "Tagihan freelancer yang tepercaya, dari draf sampai lunas.";
 export const SITE_DESCRIPTION =
   "Invoice Manager membuat, menerbitkan, dan menagih invoice secara profesional — dokumen terkunci, status yang selalu jelas, dan halaman klien resmi untuk setiap tagihan.";

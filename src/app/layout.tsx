@@ -16,7 +16,11 @@ const rubik = Rubik({
   display: "optional",
 });
 
+/** true hanya di deployment live demo — semua halaman noindex. */
+const NO_INDEX = process.env.NEXT_PUBLIC_NO_INDEX === "true";
+
 export const metadata: Metadata = {
+  ...(NO_INDEX ? { robots: { index: false, follow: false } } : {}),
   metadataBase: new URL(SITE_URL),
   title: {
     default: `${APP_NAME} — ${SITE_TAGLINE}`,

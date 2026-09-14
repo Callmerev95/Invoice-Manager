@@ -9,7 +9,8 @@ atau project hosting berbeda). **Tidak ada data yang berbagi.**
 2. Deploy (mis. Vercel) dari branch `main`, env:
    - `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`
    - `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
-   - **Jangan set** `ALLOW_DEMO_SEED` / `DEMO_EMAILS` / `NEXT_PUBLIC_DEMO_PASSWORD`
+   - `NEXT_PUBLIC_DEMO_URL=https://invoice-manager-demo.callmerev.my.id` (tombol demo di landing; fallback sudah mengarah ke sana)
+   - **Jangan set** `ALLOW_DEMO_SEED` / `DEMO_EMAILS` / `NEXT_PUBLIC_DEMO_PASSWORD` / `NEXT_PUBLIC_NO_INDEX`
 3. Verifikasi prod: `/dev/seed` menampilkan "dinonaktifkan", tidak ada kotak demo di login, tidak ada banner reset di dashboard.
 
 ## B. Live demo (untuk reviewer)
@@ -20,6 +21,7 @@ atau project hosting berbeda). **Tidak ada data yang berbagi.**
    - `ALLOW_DEMO_SEED=true`
    - `DEMO_EMAILS=demo@test.com` (harus persis sama dengan email langkah 2)
    - `NEXT_PUBLIC_DEMO_PASSWORD=<kata sandi langkah 2>`
+   - `NEXT_PUBLIC_NO_INDEX=true` (blok crawler: robots `Disallow: /` + noindex; demo tidak boleh masuk Google)
 4. Login sebagai akun demo → jalankan seed sekali via banner dashboard.
 5. Uji: bell berbadge, pager 2 halaman, PDF berlogo, reset mengembalikan data.
 6. Kosongkan untuk reviewer: hapus data via reset (atau SQL pengosongan di runbook) agar reviewer mengisi sendiri.
